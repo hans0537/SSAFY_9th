@@ -11,5 +11,4 @@ score['algorithm'] = 90
 score['python'] = 85
 
 #전체 점수 평균 구하기
-avg = sum(score.values()) / len(score)
-print(avg)
+print(sum(score.values()) / len(score))
