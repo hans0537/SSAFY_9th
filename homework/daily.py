@@ -1,12 +1,24 @@
-str_lst = input('문자열을 입력하세요. : ')
+test_status = {
+    '김싸피': 'solving',
+   	'이코딩': 'solving',
+   	'최이썬': 'cheating',
+   	'오디비': 'sleeping',
+   	'임온실': 'cheating',
+   	'조실습': 'solving',
+   	'박장고': 'sleeping',
+   	'염자바': 'cheating'
+}
 
-#문자열을 소문자화 후 배열에 각 단어 저장
-str_lst = str_lst.lower().split(" ")
+cheat = []
 
-#현재 단어와 다음 단어의 각 뒤와 앞 알파벳 비교
-for i in range(len(str_lst) - 1):
-    if(str_lst[i][-1] != str_lst[i + 1][0]):
-        print('Fail')
-        break
-else:
-    print('Pass')
+for i in test_status.keys():
+    if test_status[i] == 'cheating':
+        cheat.append(i)
+    elif test_status[i] == 'sleeping':
+        test_status[i] = 'solving'
+
+cheat = sorted(cheat)
+for i in cheat:
+    del test_status[i]
+print(cheat)
+print(test_status)
