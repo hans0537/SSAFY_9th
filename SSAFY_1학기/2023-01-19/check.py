@@ -10,3 +10,10 @@ print(tools.sub(2, 1))
 
 # print(add(1, 2))
 # print(sub(1, 2))
+
+dic= {1:[[2,2], [4,1]], 2:[1,3], 3:[4], 4:[5,1,2,2,3]}
+print(dic)
+
+for key, values in dic.items():
+    print(key)
+    print(values)
