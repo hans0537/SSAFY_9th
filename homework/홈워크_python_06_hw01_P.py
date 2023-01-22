@@ -9,7 +9,6 @@
 
 import re
 
-
 tot_water = 0
 tot_salt = 0
 for _ in range(5):
@@ -24,21 +23,4 @@ for _ in range(5):
     tot_water += water
     tot_salt += per * water / 100
 
-
-# tot_water = 0
-# tot_salt = 0
-# if len(s) == 1:
-#     print('정보를 입력하세요')
-# elif 'Done' in s and len(s) > s.index('Done') + 1:
-#     print('Done 이후에 입력을 하였습니다. 다시 입력하세요')
-# elif len(s) > 10:
-#     print('소금물 5개만 입력 가능합니다.')
-# elif 'Done' in s and len(s) % 2 == 0:
-#     print('소금물의 양과 농도를 맞춰서 입력하세요')
-# else:
-#     for i in range(0, len(s) - 1, 2):
-#         salt = int(s[i]) * int(s[i + 1]) / 100
-#         tot_water += int(s[i + 1])
-#         tot_salt += salt
-
-#     print(f'혼합물 퍼센트 농도 : {round(tot_salt / tot_water * 100, 2)}% | 혼합물 양 : {tot_water}g')
+print(f'{round(tot_salt / tot_water * 100, 2)}% {tot_water}g')
