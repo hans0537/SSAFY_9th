@@ -14,7 +14,12 @@
 def fn_d(n):
     return n + sum(map(int,list(str(n))))
 
-gen_nums = set([])
+# 입력예시
+print(fn_d(91))
+print(fn_d(100))
+
+# 셀프 넘버 판별 함수
+gen_nums = []
 def is_selfnumber(n):
     for i in range(1,n + 1):
         gen_nums.append(fn_d(i))
@@ -32,3 +37,4 @@ is_selfnumber(9)
 is_selfnumber(10)
 is_selfnumber(20)
 is_selfnumber(31)
+
