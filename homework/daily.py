@@ -1,24 +1,30 @@
-test_status = {
-    '김싸피': 'solving',
-   	'이코딩': 'solving',
-   	'최이썬': 'cheating',
-   	'오디비': 'sleeping',
-   	'임온실': 'cheating',
-   	'조실습': 'solving',
-   	'박장고': 'sleeping',
-   	'염자바': 'cheating'
-}
+import random
 
-cheat = []
+def making_card_list() -> list:
+	card_list = []
 
-for i in test_status.keys():
-    if test_status[i] == 'cheating':
-        cheat.append(i)
-    elif test_status[i] == 'sleeping':
-        test_status[i] = 'solving'
+	for shape in ["spade", "heart", "diamond", "clover"]:
 
-cheat = sorted(cheat)
-for i in cheat:
-    del test_status[i]
-print(cheat)
-print(test_status)
+		for number in ["A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K"]:
+
+			card_list.append((shape, number))
+
+	return card_list
+
+trump_card_list = making_card_list()
+
+# 카드 섞기
+random.shuffle(trump_card_list)
+
+print(trump_card_list)
+
+print(trump_card_list.pop(0))
+print(trump_card_list)
+p1 = 0
+p2 = 0
+
+while p1<7 and p2<7:
+	player_1 = trump_card_list.pop(0)
+	player_2 = trump_card_list.pop(0)
+
+	
