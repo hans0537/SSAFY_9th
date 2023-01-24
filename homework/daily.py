@@ -1,30 +1,23 @@
-import random
+words_dict = {'proper' : '적절한',
+'possible' : '가능한',
+'moral' : '도덕적인',
+'patient' : '참을성 있는',
+'balance' : '균형',
+'perfect' : '완벽한',
+'logical' : '논리적인',
+'legal' : '합법적인',
+'relevant' : '관련 있는',
+'responsible' : '책임감 있는',
+'regular' : '규칙적인'}
 
-def making_card_list() -> list:
-	card_list = []
+words_list = []
+for i in words_dict:
+    if i[0] == 'b' or i[0] == 'm' or i[0] == 'p':
+        words_list.append('im' + i)
+    elif i[0] == 'l':
+        words_list.append('il' + i)
+    elif i[0] == 'r':
+        words_list.append('ir' + i)
 
-	for shape in ["spade", "heart", "diamond", "clover"]:
-
-		for number in ["A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K"]:
-
-			card_list.append((shape, number))
-
-	return card_list
-
-trump_card_list = making_card_list()
-
-# 카드 섞기
-random.shuffle(trump_card_list)
-
-print(trump_card_list)
-
-print(trump_card_list.pop(0))
-print(trump_card_list)
-p1 = 0
-p2 = 0
-
-while p1<7 and p2<7:
-	player_1 = trump_card_list.pop(0)
-	player_2 = trump_card_list.pop(0)
-
-	
+words_list = sorted(words_list)
+print(words_list)
