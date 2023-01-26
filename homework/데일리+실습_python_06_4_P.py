@@ -41,7 +41,7 @@ for name in suspicious:
     if name[1] > 0:
         print(f'{name[0]}은 입장 기록이 {name[1]}회 더 많아 수상합니다.')
     elif name[1] < 0:
-        print(f'{name[0]}은 퇴장 기록이 {name[1]}회 더 많아 수상합니다.')
+        print(f'{name[0]}은 퇴장 기록이 {-name[1]}회 더 많아 수상합니다.')
 
 print()
 # 카운터 사용
