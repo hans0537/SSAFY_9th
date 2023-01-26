@@ -6,6 +6,45 @@ exit_record = ['최이썬', '조실습', '이싸피', '안도둑', '임온실', 
                '박장고', '안도둑', '염자바', '이싸피', '조실습', '조실습', '임온실', '박장고', '이싸피', '조실습', '박장고', '오디비', '안도둑', '조실습', '임온실', '안도둑', '안도둑', '임온실', '조실습', '최이썬', '안도둑', '임온실',
                '염자바', '이싸피', '임온실', '안도둑', '오디비', '안도둑', '오디비', '임온실', '염자바', '임온실', '박장고', '조실습', '이싸피', '최이썬', '최이썬', '오디비', '오디비', '염자바', '오디비', '안도둑', '박장고']
 
+# 딕셔너리 사용
+entry_dic = {} 
+exit_dic = {}
+
+for i in entry_record:
+    if i in entry_dic:
+        entry_dic[i] += 1
+    else:
+        entry_dic[i] = 1
+
+for i in exit_record:
+    if i in exit_dic:
+        exit_dic[i] += 1
+    else:
+        exit_dic[i] = 1
+
+top3 = list(sorted(entry_dic.items(), key=lambda x : x[1], reverse=True))
+print(top3)
+print('입장 기록 많은 Top3')
+for i in range(3):
+    print(f'{top3[i][0]} {top3[i][1]}회')
+
+print()
+
+print('출입 기록이 수상한 사람')
+suspicious = []
+for name in entry_dic:
+    cnt = entry_dic.get(name) - exit_dic.get(name)
+    if cnt != 0:
+        suspicious.append((name, cnt, ))
+
+for name in suspicious:
+    if name[1] > 0:
+        print(f'{name[0]}은 입장 기록이 {name[1]}회 더 많아 수상합니다.')
+    elif name[1] < 0:
+        print(f'{name[0]}은 퇴장 기록이 {name[1]}회 더 많아 수상합니다.')
+
+print()
+# 카운터 사용
 from collections import Counter
 
 entry_dic = Counter(entry_record)
