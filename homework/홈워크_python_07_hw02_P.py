@@ -13,6 +13,7 @@ def collatz(num):
         else:
             num = num // 2
             cnt += 1
+            
     return cnt
 
 print(collatz(6))  # => 8
