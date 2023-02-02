@@ -1,22 +1,28 @@
 def dump(cnt, box):
-    if cnt == 0:
-        return
+
     while cnt > 0:
+        maxV = -1e9
+        maxIdx = 0
+        minV = 1e9
+        minIdx = 0
+        for i in range(len(box)):
+            if box[i] > maxV:
+                maxV = box[i]
+                maxIdx = i
 
-    box = sorted(box)
-    for i in range(1, 100):
-        if box[0] < box[i]:
-            cnt -= box[i] - box[0]
-            box[99] -= box[i] - box[0]
-            box[0] += box[i] - box[0]
-            break
-    return dump(cnt, box)
+            if box[i] < minV:
+                minV = box[i]
+                minIdx = i
 
+        box[maxIdx] -= 1
+        box[minIdx] += 1
+        cnt -= 1
 
-
+    return max(box) - min(box)
 
 for tc in range(1, 11):
     cnt = int(input())
     box = list(map(int, input().split()))
 
-    dump(cnt, box)
+    print(dump(cnt, box))
+
