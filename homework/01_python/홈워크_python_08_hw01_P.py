@@ -7,17 +7,23 @@ class Point:
         self.y = y
 
 class Rectangle:
-
+    
+    # 좌측상단좌표 와 우측상단좌표 (Point 인스턴스)들을
+    # rectangle 인스턴스에 저장
     def __init__(self, p1, p2):
         self.p1 = p1
         self.p2 = p2
 
+    # 넓이 메서드
     def get_area(self):
+        # 각 좌표 인스턴스의 x와 y 좌표 접근
         return abs((self.p1.x - self.p2.x) * (self.p1.y - self.p2.y))
 
+    # 둘레 메서드
     def get_perimeter(self):
         return (abs(self.p1.x - self.p2.x) + abs(self.p1.y - self.p2.y))*2
 
+    # 정사각형 유무 메서드
     def is_square(self):
         if abs(self.p1.x - self.p2.x) == abs(self.p1.y - self.p2.y):
             return True
