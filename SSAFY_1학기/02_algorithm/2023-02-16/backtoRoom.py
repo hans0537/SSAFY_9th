@@ -20,4 +20,5 @@ for tc in range(1, T + 1):
 
         for j in range(s, e):
             corridor[j] += 1
+
     print(f'#{tc} {max(corridor)}')
