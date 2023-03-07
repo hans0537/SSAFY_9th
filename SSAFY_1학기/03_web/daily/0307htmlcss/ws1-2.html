@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      /*
+        element:nth-child(n)
+        부모의 n번째 자식을 선택한다.
+        모든 자식 element 중에 n번째를 찾는다.
+        부모의 n번째 자식이 지정된 element라면 작성된 스타일이 적용된다.
+
+        element:nth-of-type(n)
+        부모의 자식 element중에 지정한 element의 n번째를 선택한다.
+        다른 element들은 무시 하고 지정된 element중 n번째를 찾는다.
+    */
+
+      /* 자식 중에서 2번째 자식이 p 인 경우 */
+      div > p:nth-child(2) {
+        color: blue;
+      }
+      /* 자식인 p 가 여러명 있는데 그중 2번재 p */
+      div > p:nth-of-type(2) {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h2>결과는?</h2>
+      <p>1</p>
+      <p>2</p>
+      <p>3</p>
+      <p>4</p>
+    </div>
+  </body>
+</html>
