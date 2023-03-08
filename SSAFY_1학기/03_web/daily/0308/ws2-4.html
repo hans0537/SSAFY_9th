@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .board {
+            width: 800px;
+            height: 800px;
+            border: 2px solid black;
+        }
+
+        .row {
+            display: flex;
+            width: 800px;
+            height: 100px;
+        }
+
+        .box {
+            display: flex;
+            height: 100px;
+            width: 100px;
+        }
+
+        .board .row:nth-child(even)>div:nth-child(odd) {
+            background-color: black;
+        }
+        
+        .board .row:nth-child(odd) div:nth-child(even) {
+            background-color: black;
+        }
+        /*
+        .white_king {
+            background-image: url(./images/white_king.png);
+            background-size: contain;
+            position: relative;
+            left: 200px;
+        }
+
+        .white_queen {
+            background-image: url(./images/white_queen.png);
+            background-size: contain;
+        }
+
+        .white_rook {
+            background-image: url(./images/white_rook.png);
+            background-size: contain;
+            position: relative;
+            right:200px;
+        }
+
+        .black_pawn {
+            background-image: url(./images/black_pawn.png);
+            background-size: contain;
+        } */
+
+        #k {
+            position: relative;
+            left: 200px;
+        }
+
+        #r {
+            position: relative;
+            right: 200px;
+        }
+
+        #q {
+            position: relative;
+            right: 300px;
+            bottom: 300px;
+        }
+
+        #p {
+            display: none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="board">
+        <div class="row">
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+        </div>
+        <div class="row">
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+        </div>
+        <div class="row">
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+        </div>
+        <div class="row">
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+        </div>
+        <div class="row">
+            <div class="box"><img id="p" src="./images/black_pawn.png"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+        </div>
+        <div class="row">
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+        </div>
+        <div class="row">
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+        </div>
+        <div class="row">
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"><img id="q" src="./images/white_queen.png"></div>
+            <div class="box"><img id="k" src="./images/white_king.png"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"><img id="r" src="./images/white_rook.png"></div>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+        /* 자손 결합자 */
+        /*
+            모든 자손(하위) 에 대해 적용
+            즉 div 자손중 모든 p에 대해 적용
+        */
+
+        div p {
+            color: blue;
+        }
+
+        /* 자식 결합자  */
+        /*
+            직계 자식만 적용
+            즉 div 직계 자식(p, ul) 중 p만 적용
+        */
+        div > p {
+            color: crimson;
+        }
+
+
+    </style>
+</head>
+
+<body>
+    <div>
+        <p>자식</p>
+        <ul>
+            <p>손자</p>
+        </ul>
+        <p>자식</p>
+    </div>
+</body>
+
+</html>
