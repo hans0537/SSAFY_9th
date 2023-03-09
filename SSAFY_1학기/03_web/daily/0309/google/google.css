@@ -1,0 +1,56 @@
+/* 상단 */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+}
+
+.menu > div {
+    padding: 10px;
+    text-align: center;
+}
+
+.menu img {
+    width: 40px;
+}
+
+/* 중단 */
+header {
+    display: flex;
+    justify-content: center;
+}
+
+header > img {
+    width: 400px;
+}
+
+section{
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+.search-bar {
+    width: 70%;
+    height: 40px;
+    border: 1px solid black;
+    border-radius: 25px;
+    padding: 5px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.search-icons{
+    display: flex;
+    align-items: center;
+}
+
+.search-icons img{
+    width: 20px;
+    padding: 0px 3px;
+}

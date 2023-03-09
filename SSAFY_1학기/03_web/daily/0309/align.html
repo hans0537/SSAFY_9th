@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .container {
+            background-color: gold;
+            border: 2px solid black;
+            width: 900px;
+            height: 600px;
+            padding: 10px;
+
+            display: flex;
+        }
+
+        .box {
+            border: 2px solid black;
+            background-color: greenyellow;
+            width: 200px;
+            height: 50px;
+            
+        }
+
+        /* align-content : 여러줄에 적용, flex-wrap : wrap 해야 작동 */
+        .content {
+            flex-wrap: wrap;
+            align-content: center;
+        }
+
+        /* align-items : 각 줄에 적용 */
+        .items {
+            flex-wrap: wrap;
+            align-items: center;
+            /* align-items: stretch; */
+            /* stretch 사용시 height 값을 사용하지 않아야 한다. */
+        }
+    </style>
+</head>
+<body>
+    <h1>1 align-content</h1>
+    <div class="container content">
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+    </div>
+
+    <h1>2 align-items</h1>
+    <div class="container items">
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+    </div>
+</body>
+</html>

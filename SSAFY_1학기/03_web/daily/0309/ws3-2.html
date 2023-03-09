@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .content{
+            margin: 30px 30px;
+        }
+        .alert {
+            background-color: red;
+            border-radius: 5px;
+            width: 400px;
+            height: 60px;
+        }
+
+        h1{
+            margin: 10px 0px;
+        }
+
+        .alert>span {
+            color: white;
+            line-height: 60px;
+            margin-left: 10px;
+        }
+
+        .content>hr{
+            margin: 10px 0px;
+            width: 400px;
+        }
+
+        .sign-in{
+            border: 1px solid black;
+            border-radius: 5px;
+            width: 400px;
+            height: 350px;
+        }
+
+        header{
+            text-align: center;
+            font-weight: bolder;
+            padding: 10px;
+        }
+
+        .sign-in > hr {
+            background-color: blue;
+            height: 2px;
+            border: 0px;
+        }
+
+        .info {
+            padding: 10px 25px;
+        }
+
+        .name, .pw{
+            padding: 10px 0;
+            font-weight: bolder;
+        }
+
+        .box{
+            border: 1px solid black;
+            border-radius: 5px;
+            width: 350px;
+            height: 30px;
+        }
+        
+        .check-box {
+            float: left;
+            border: 1px solid black;
+            border-radius: 4px;
+            width: 13px;
+            height: 13px;
+            margin-top: 15px;
+            margin-right: 10px;
+        }
+
+        .remember {
+            float: left;
+            padding-top: 10px;
+        }
+
+        .find{
+            float: right;
+            padding-top: 10px;
+            color: skyblue;
+        }
+
+        .clear::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        .button {
+            width: 350px;
+            height: 20px;
+            border: 1px solid green;
+            border-radius: 5px;
+            background-color: green;
+            text-align: center;
+            margin: 10px auto;
+            padding: 10px 0;
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+    
+    <div class="content">
+        <div class="alert">
+            <span>Invalid Login or password</span>
+        </div>
+    
+        <h1>SSAFY 전용 Gitlab 시스템</h1>
+        <hr>
+
+        <div class="sign-in">
+            <header>Sign in</header>
+            <hr>
+
+            <div class="info">
+                <div class="name">Username or Email</div>
+                <div class="box"></div>
+                <div class="pw">Password</div>
+                <div class="box"></div>
+                <div class="clear">
+                    <div class="check-box"></div>
+                    <div class="remember">Remeber me</div>
+                    <div class="find">Forgot your Password?</div>
+                </div>
+            </div>
+
+            <div class="button">Sign in</div>
+        </div>
+
+    </div>
+
+</body>
+</html>
