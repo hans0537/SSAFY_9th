@@ -61,3 +61,6 @@ URL -> VIEW -> TEMPLATE 데이터 흐름 이해하기
 urls.py 의 urlpatterns 에 경로를 잡아주고
 
 views.py HttpResponse를 활용하여 html page로 응답을 돌려준다
+
+
+
