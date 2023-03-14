@@ -1,0 +1,63 @@
+Django 공식문서 활용하기
+
+$ pip install django==3.2.18
+※ 버전 설정 안하면 가장 최신 버전이 설치 된다
+
+- 프로젝트 생성
+$ django-admin startproject firstpjt(프로젝트 명)
+
+- 해당 프로젝트 폴더로 이동후
+$ cd 프로젝트명/
+
+- 서버 실행
+$ python manage.py runserver
+
+- 서버 실행 후 해당 주소로 접속하면 내 현재 터미널과 연동이 되어 있다.
+Starting development server at http://127.0.0.1:8000/
+
+=================================================================
+가상 환경에서 사용하기
+
+새로운 폴더를 생성후 가상환경 생성
+깃 배시를 연후
+
+가상환경 생성
+- python -m venv .venv
+
+가상환경 활성화
+- source venv/Scripts/activate
+
+가상환경 비활성화
+- deactivate
+
+※ 가상환경은 프로젝트별 패키지를 독립적으로 관리하기 위한 것
+
+따라서 다른 환경에 가서 가상환경을 편하게 다시 가져오려면
+가상환경 패키지 목록 저장
+
+- pip freeze > requirements.txt
+requirements.txt 안에 설치할 목록과 버전을 정리
+예) 
+asgiref==3.6.0
+Django==3.2.18
+...
+
+파일로부터 패키지 설치
+pip install -r requirements.txt
+
+================================================================
+Django Application
+
+- 애플리케이션(앱) 생성
+$ python manage.py startapp articles
+※ 일반적으로 애플리케이션 이름은 '복수형'으로 작성하는것을 권장
+
+- 앱을 생성했다면 반드시 등록해야함
+settings.py 안에 INSTALLED_APPS = []  리스트에 반드시 추가!!
+
+
+URL -> VIEW -> TEMPLATE 데이터 흐름 이해하기
+
+urls.py 의 urlpatterns 에 경로를 잡아주고
+
+views.py HttpResponse를 활용하여 html page로 응답을 돌려준다
