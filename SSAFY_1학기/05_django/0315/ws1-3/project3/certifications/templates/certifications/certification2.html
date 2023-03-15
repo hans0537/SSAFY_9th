@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content1 %}
+<ul>
+  <li>이름 : {{ name }}</li>
+  <li>나이 : {{ age|random }}</li>
+  <li>등급 : {{ grade|random|upper }}</li>
+</ul>
+{% endblock content1 %}
+

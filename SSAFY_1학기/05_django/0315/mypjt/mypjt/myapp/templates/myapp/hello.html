@@ -1,0 +1,15 @@
+{% extends './base.html' %}
+
+{% block content %}
+
+  hola
+  {{ info.name }}
+
+  {% if info.age == 19 %}
+  <p>부럽다</p>
+  {% endif %} 
+
+
+  {{ info.age | add:2 }}
+
+{% endblock content %}

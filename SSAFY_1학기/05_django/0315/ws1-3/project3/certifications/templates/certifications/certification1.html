@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content1 %}
+<ul>
+  <li>{{ today|date:"Y년 m월 d일 (D) A H:i" }}</li>
+  <li>이름 : {{ name }}</li>
+  <li>나이 : {{ age|random }}</li>
+  <li>등급 : {{ grade|random|upper }}</li>
+</ul>
+{% endblock content1 %}
+
