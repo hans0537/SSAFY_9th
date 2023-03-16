@@ -1,0 +1,81 @@
+form 을 통해 보낸 데이터는 view 함수의 첫번째 인자 request에 들어있다
+request.GET 으로 넘어온 반환값은 딕셔너리 형태
+
+================================================
+Django Model
+- Model 즉 객체들의 정보를 담을 모델 
+- Java에서 dto 같은 것들
+- ORM을 통해 데이터베이스와 통신
+
+- 해당 어플리캐이션 models.py 안에
+====class 생성====
+class Article(models.Model): # models를 상속받는다
+    title = models.CharField(max_length=20)  # 문자열 형태 CharField는 최대 몇자까지 명시를 해주어야 함
+    content = models.TextField()
+
+models.py에 데이터베이스 스키마를 정의 했으면 (즉 모델을 등록했으면)
+
+Migrations 작업 필요 (모델 반영) ※ 반드시 순서대로
+$ python manage.py makemigrations	- 생성하기
+
+$ python manage.py migrate 반영하기
+ 세션, 관리자 등 기본적으로 필요한것들을 미리 생성해준다
+ 
+- 파이썬 에서 sqlite 보려면 VSCode 확장 프로그램 설치
+
+- 외부 라이브러리 설치 및 설정
+$ pip install ipython
+$ pip install django-extensions
+ settings.py 안에 INSTALLED_APPS = ['django_extensions'] 추가하기!!
+
+- Django shell
+ORM관련 구문 연습을 위해 파이썬 쉘 환경을 사용
+$ python manage.py shell 을 사용하지만
+$ python manage.py shell_plus 더 강력한 shell_plus로 진행
+
+Article.objects.all()
+- Article은 내가 models.py에서 선언한 클래스
+- 현재 Article로 선언한 테이블에 값이 있는지 확인 (값을 모두 불러오는)
+
+======CREATE======
+첫번째 방법
+1. article = Article() -> 클래스를 통해 인스턴스 생성
+2. article.title 	 -> 각 인스턴스에 값을 할당
+3. article.save()	 -> 인스턴스로 save 메서드 호출해야 DB에 저장
+
+두번째 방법 (인스턴스 생성시 초기값을 작성)
+1. article = Article(title='second', content='django!')
+2. article.save()
+
+세번째 방법 (위 2가지 방식과는 다르게 바로 생성후 데이터 반환)
+Article.objects.create(title='thrid', content='django!')
+
+======READ======
+- .get()
+
+- 단일 데이터 조회
+- 객체 없으면 DoesNotExist 예외
+- 둘 이상의 객체면 MultipleObjectsReturned 예외
+
+Article.objects.get(pk=1)
+
+- .filter()
+
+- 조건이 맞는 객체들을 QuerySet에 담아서 반환
+※ 조회된 객체가 없거나 1개여도 QuerySet을 반환
+
+Article.objects.filter(title='ssafy')
+
+- Field lookups
+- 메서드 공식문서 참고
+
+======UPDATE======
+article = Article.objects.get(pk=1) -> 수정 하고자하는 객체를 인스턴스에 저장
+article.title = 'byebye'	-> 변경후
+article.save()		-> 저장
+
+======DELETE======
+article = Article.objects.get(pk=1) -> 삭제하고자 하는 객체를 인스턴스에 저장
+article.delete()	-> 삭제
+이때 반환되는 값은
+(개수, {객체:개수}) 튜플 인듯??

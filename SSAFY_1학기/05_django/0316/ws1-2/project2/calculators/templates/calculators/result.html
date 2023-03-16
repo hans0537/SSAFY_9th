@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>계산 결과</h1>
+  <ul>
+    <li>{{ x }} + {{ y }} = {{ x|add:y }}</li>
+    <li>{{ x }} * {{ y }} = {{ mul }}</li>
+    <li>{{ x }} - {{ y }} = {{ sub }}</li>
+    <li>{{ x }} / {{ y }} = {% if div == 0 %}계산할 수 없습니다{% else %}{{ div }}{% endif %}  </li>
+
+  </ul>
+</body>
+</html>
