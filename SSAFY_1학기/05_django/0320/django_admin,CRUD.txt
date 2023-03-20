@@ -1,0 +1,42 @@
+관리자 페이지 생성
+$ python manage.py createsuperuser
+
+username = admin
+password = password123
+
+생성후 /admin/으로 접속후 로그인
+Django에서 admin페이지를 미리 만들어 둠
+
+기존에 생성한 모델들을 admin페이지에서 확인 하려면
+articles/admin.py 파일에 등록 필요!!
+
+from .models import Article
+
+admin.site.register(Article)
+
+=====================================================
+QuerySet API를 통해 view 함수에서 CRUD구현 (DB와 통신)
+
+1. READ
+view page에서
+
+articles = Article.objects.all() 으로 담아오기만 하면 된다
+context = {'articles':articles} 후 render를 통해 해당 html로 보내면
+article.pk 로 접근 가능
+
+url로 특정 게시글 조회시
+
+urlpatterns = [
+	path('<int:pk>/', views.detail, name='detail'),
+]
+
+url 'articles:detail' article.pk => url 패턴 옆에 파라미터 보내주기
+
+2. CREATE
+POST 방식 (DB에 변화를 준다) ...조회같은 것들은 GET방식
+POST방식 사용시 form바로 밑에 {% csrf_token %}를 기재 해야 한다.
+
+form 에서 보내온 데이터를 view에서 가져와
+article = Article(title = title, content = content) 넣어주고
+--- 이사이에는 유효성 검사등 추가적인 행동 ---
+article.save() 데이터 베이스 반영

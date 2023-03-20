@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>DETAIL</h1>
+  <hr>
+    <p>글 제목 : {{ article.title }}</p>
+    <p>글 제목 : {{ article.content }}</p>
+    <p>글 제목 : {{ article.created_at }}</p>
+    <p>글 내용 : {{ article.updated_at }}</p>
+
+    <!-- 글삭제도 서버의 변경사함을 만듦으로 POST메서드-->
+    <form action="{% url 'articles:delete' article.id %}" method="POST">
+      {% csrf_token %}
+      <input type="submit" value="DELETE" class="btn btn-danger">
+    </form>
+    <a href="{% url 'articles:edit' article.id %}">수정하기</a>
+    <a href="{% url 'articles:index' %}">목록보기</a>
+
+{% endblock content %}
+

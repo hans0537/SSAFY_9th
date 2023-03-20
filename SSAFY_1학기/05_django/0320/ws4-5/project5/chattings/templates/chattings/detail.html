@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="text-center">DETAIL</h1>
+<h2>{{chat.user}}의 글</h2>
+<hr>
+<p>내용: {{chat.content}}</p>
+<p>작성 시각: {{chat.created_at}}</p>
+<p>수정 시각: {{chat.updated_at}}</p>
+<hr>
+
+<a href="{% url 'chattings:edit' chat.pk %}">[edit]</a>
+<form action="" method="POSt">
+  {% csrf_token %}
+  <input type="submit" value="DELETE">
+</form>
+
+<a href="">[prev]</a>
+<a href="">[next]</a>
+<br>
+<a href="{% url 'chattings:index' %}">[back]</a>
+
+{% endblock content %}
