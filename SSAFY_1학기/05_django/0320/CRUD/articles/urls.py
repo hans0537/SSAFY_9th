@@ -7,11 +7,11 @@ urlpatterns = [
     # <int:pk> 로도 사용 가능
     path('<int:id>/', views.detail, name='detail'),
     
-    path('new/', views.new, name='new'),
+    # path('new/', views.new, name='new'),
     path('create/', views.create, name='create'),
     
     path('<int:id>/delete', views.delete, name='delete'),
     
-    path('<int:id>/edit/', views.edit, name='edit'),
+    # path('<int:id>/edit/', views.edit, name='edit'),
     path('<int:id>/update/', views.update, name='update'),
 ]

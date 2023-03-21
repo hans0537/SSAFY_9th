@@ -1,0 +1,89 @@
+- Static Files (정적 파일)
+  - 파일 자체가 고정되어 있고, 변경되지 않는 파일
+
+- Media File
+  - 미디어 파일
+  - 사용자가 웹에서 업로드 하는 정적 파일
+  - 유저가 업로드 한 모든 정적 파일
+
+=====================================================
+Static Files 구성하기
+
+setting.py 안에 INSTALLED_APPS에 django.contrib.staticfiles가 추가 되어 있음
+
+STATIC_URL = '/static/' => 반드시 (/)로 끝나야 함
+
+추가적으로 설정해야 하는것
+
+STATICFILES_DIRS=[
+    BASE_DIR / '내가 이미지 파일 저장할 경로',
+]
+
+- 가져오는 방법
+정적 이미지를 뿌려줄 base.html 부분에 static을 로드 한다
+{% load static %}
+
+1. app안에 static 이미지 파일을 만들었을 경우
+<img src="{% static 'articles/sample_img.png' %} ....
+
+2. 외부에 base이미지 넣을경우 (그냥 바로 때려 넣는다)
+<img src="{% static 'sample_img.png' %}
+
+======================================================
+Media Files 구성하기
+
+form에서 이미지나 파일을 업로드 할 경우 기본 설정..
+
+setting.py 안에
+
+# 반드시 STATIC_ROOT와 다른 경로로 지정!!
+MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = '/media/'
+
+사용자가 업로드한 미디어 파일을 DB에 저장하거나 다시 보여주어야 함으로 필요한 작업
+
+프로젝트/urls.py
+
+from django.conf import settings  => setting에서 선언한 media의 정보를 가져오기 위함
+from django.conf.urls.static import static
+
+urlpatterns = [
+
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+          업로드 된 파일의 URL      파일의 실제 위치
+
+
+- 모델의 DB 컬럼에도 이미지 필드를 추가 해야한다
+# models.py
+
+class Article(models.Model):
+  ...
+  image = models.ImageField(black=True)
+  => blank = True 인경우
+    필드를 비워 둘 수 있음, 이 경우 DB에는 ''빈문자열이 저장됨
+
+※ 변경을 하였으면 migrate 하기전에 ImageField를 사용하려면 반드시 Pillow 라이브러리 필요!!
+$ pip install Pillow => 후에 migrate 하기
+
+※ form 태그안에 enctype="multipart/form-data" 인코딩 타입 추가
+
+※ request.FILES...
+  파일 및 이미지는 request의 POST속성 값으로 안넘어가고 FILES속성 값에 담겨 넘어감으로
+  views.py 에서 이미지 및 파일을 받을경우 request.FILES를 두번째 인자로 받아야함
+
+  ex)
+      def create(request):
+        if request.method == 'POST':
+          form = ArticleForm(request.POST, request.FILES)
+
+여기 까지가 사용자가 이미지를 post할때 DB에 저장... 
+
+그러면 이제 다시 뿌려줄때는
+article.image.url - 업로드 파일의 경로
+article.image - 업로드 파일의 파일 이름
+
+html파일에서
+
+{% if article.image %} => 있는지 확인후
+  <img src="{{ article.image.url }}"...
+

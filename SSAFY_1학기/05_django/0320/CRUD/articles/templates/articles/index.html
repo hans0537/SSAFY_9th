@@ -2,7 +2,7 @@
 
 {% block content %}
   <h1>INDEX</h1>
-  <a href="{% url 'articles:new' %}">글 작성</a>
+  <a href="{% url 'articles:create' %}">글 작성</a>
   <hr>
   {% for a in articles %}
     <p>글 번호 : {{ a.id }}</p>
