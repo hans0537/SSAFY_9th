@@ -5,6 +5,9 @@
   <a href="{% url 'articles:create' %}">CREATE</a>
   <hr>
   {% for article in articles %}
+    {% comment %} {% if article.image %}
+      <img src="{{article.image_thumbnail.url}}" alt="">
+    {% endif %} {% endcomment %}
     <p>제목 : {{ article.title }}</p>
     <p>내용 : {{ article.content }}</p>
     <a href="{% url 'articles:detail' article.pk %}">[detail]</a>
