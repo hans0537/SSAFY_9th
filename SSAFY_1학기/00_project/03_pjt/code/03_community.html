@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="01_nav_footer.css">
+  <link rel="stylesheet" href="03_community.css">
+  <title>Community</title>
+</head>
+
+<body>
+  <!-- 01_nav_footer에서 작성한 Navigation bar & Modal & Footer 코드를 적절한 위치에 사용합니다. -->
+  <!-- navbar -->
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark bg-gradient sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="./02_home.html">
+        <img class="logo" src="images/logo.png" alt="logo.png">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link" aria-current="page" href="./02_home.html">Home</a>
+          <a class="nav-link active" href="./03_community.html">Community</a>
+          <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">Login</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- 03_community.html -->
+  <main class="container">
+    <h1>Community</h1>
+    <div class="row">
+      <div class="col-lg-2">
+        <!-- Aside - 게시판 목록 -->
+        <aside>
+          <div id="list-example" class="list-group">
+            <ul>
+              <li class="list-group-item list-group-item-action">
+                <a href="#">Boxoffice</a>
+              </li>
+              <li class="list-group-item list-group-item-action">
+                <a href="#">Movies</a>
+              </li>
+              <li class="list-group-item list-group-item-action">
+                <a href="#">Genres</a>
+              </li>
+              <li class="list-group-item list-group-item-action">
+                <a href="#">Actors</a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+  
+      <!-- Section - 게시판 -->
+      <section class="col-lg-10 ">
+        <div class="d-lg-none">
+          <article>
+            <div class="board">
+              <h1>Best Movie Ever</h1>
+              <h2>Great Movie Title</h2>
+              <p>user</p>
+              <br>
+              <p>1 minute ago</p>
+            </div>
+            <div class="board">
+              <h1>Movie Test</h1>
+              <h2>Great Movie Title</h2>
+              <p>user</p>
+              <br>
+              <p>1 minute ago</p>
+            </div>
+            <div class="board">
+              <h1>Movie Test</h1>
+              <h2>Great Movie Title</h2>
+              <p>user</p>
+              <br>
+              <p>1 minute ago</p>
+            </div>
+          </article>
+        </div>
+  
+        <div class="d-none d-lg-block">
+          <table class="table table-striped">
+            <thead class="table-dark">
+              <tr>
+                <th scope="col">영화 제목</th>
+                <th scope="col">글 제목</th>
+                <th scope="col">작성자</th>
+                <th scope="col">작성 시간</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Great Movie title</th>
+                <td>Best Movie Ever</td>
+                <td>User</td>
+                <td>1 minute ago</td>
+              </tr>
+              <tr>
+                <th scope="row">Great Movie title</th>
+                <td>Movie Test</td>
+                <td>User</td>
+                <td>1 minute ago</td>
+              </tr>
+              <tr>
+                <th scope="row">Great Movie title</th>
+                <td>Movie Test</td>
+                <td>User</td>
+                <td>1 minute ago</td>
+              </tr>
+              <tr>
+                <th scope="row">Great Movie title</th>
+                <td>Movie Test</td>
+                <td>User</td>
+                <td>1 minute ago</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+    
+    <nav aria-label="Page navigation example">
+      <ul class="page pagination justify-content-center">
+        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+      </ul>
+    </nav>
+
+  </main>
+
+  <!-- footer -->
+  <footer class="fixed-bottom text-center my-1">
+    <div>
+      Web-bootstrap PJT, by 신성주
+    </div>
+  </footer>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="#">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="formGroupExampleInput" class="form-label">Email address</label>
+              <input type="text" class="form-control" id="formGroupExampleInput">
+              <div class="my-1 text-secondary">We'll never share your email with anyone else</div>
+            </div>
+            <div class="mb-3">
+              <label for="formGroupExampleInput2" class="form-label">Password</label>
+              <input type="text" class="form-control" id="formGroupExampleInput2">
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="gridCheck">
+              <label class="form-check-label" for="gridCheck">
+                Check me out
+              </label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

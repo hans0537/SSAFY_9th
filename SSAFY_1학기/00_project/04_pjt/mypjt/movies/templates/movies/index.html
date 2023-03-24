@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>INDEX</h1>
+  {% if msg != '' %}
+    <a href="#" onclick="loginCheck('{{msg}}');">CREATE</a>
+  {% else %}
+    <a href="{% url 'movies:create' %}">CREATE</a>  
+  {% endif %}
+  <hr>
+  
+  {% for m in movies %}
+  <h5  style="margin-left: 50px">{{m.pk}}번째 영화</h5>
+  <div class="d-flex">
+    {% if m.poster_img %}
+      <img style="width: 200px" src="{{m.poster_img.url}}" alt="poster_img">
+    {% endif %}
+    <div style="margin-left: 50px">
+      제목 : <a class="fs-4" href="{% url 'movies:detail' m.pk %}">{{m.title}}</a>
+      <p>평점 : {{m.score}}</p>
+    </div>
+  </div>
+  <hr>
+  {% endfor %}
+
+  <script>
+    function loginCheck(msg){
+      alert(msg)
+    }
+  </script>
+{% endblock content %}

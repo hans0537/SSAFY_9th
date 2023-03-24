@@ -1,0 +1,97 @@
+{% load static %}
+{% load django_bootstrap5 %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	{% bootstrap_css %}
+  <title>Document</title>
+</head>
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark bg-gradient sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'movies:index' %}">
+        <img style="width:140px; height:50px;" src="{% static 'logo.png' %}" alt="logo.png">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" style="flex-grow: 0" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          {% if user.is_authenticated %}
+          <div class="d-flex align-items-baseline">
+            <h3 class="nav-link"><i>안녕하세요, {{user}} 님 !</i></h3>
+            <a class="nav-link active" aria-current="page" href="{% url 'movies:index' %}">Home</a>
+            <a class="nav-link" href="{% url 'accounts:logout' %}">로그아웃</a>
+          </div>
+          {% else %}
+            <a class="nav-link active" aria-current="page" href="{% url 'movies:index' %}">Home</a>
+            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginmodal">Login</a>
+            <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#signupModal">Signup</a>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Login Modal -->
+  <div class="modal fade" id="loginmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Login</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        {% if not user.is_authenticated %}
+          <form action="{% url 'accounts:login' %}" method="POST">
+            {% csrf_token %}
+            <div class="modal-body">
+              {% bootstrap_form loginForm %}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">submit</button>
+            </div>
+          </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Signup Modal -->
+  <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Signup</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        {% if not user.is_authenticated %}
+          <form action="{% url 'accounts:signup' %}" method="POST">
+            {% csrf_token %}
+            <div class="modal-body">
+              {% bootstrap_form signupForm %}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">submit</button>
+            </div>
+          </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <img style="width:100%" src="{% static 'header.jpg' %}" alt="header.jpg">
+    {% block content %}
+    
+    {% endblock content %}
+    {% bootstrap_javascript %}
+  </div>
+</body>
+</html>

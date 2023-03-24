@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+  <h1>UPDATE</h1>
+  <hr>
+  <form action="{% url 'movies:update' movie.pk %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <input class="btn btn-primary" type="reset" value="Reset">
+    <input class="btn btn-primary" type="submit" value="Submit">
+  </form>
+  <hr>
+  <a class="btn btn-info mb-3" href="{% url 'movies:detail' movie.pk %}">BACK</a>
+
+  <script>
+    var poster = document.getElementById('id_poster_img')
+    var poster_url = document.getElementById('id_poster_url')
+    poster.onchange = function() {
+      poster_url.value = poster.value
+    }
+    
+
+    var score = document.getElementById('id_score')
+    var score_pTag = document.createElement('h3');
+    score_pTag.innerHTML = score.value
+    document.getElementsByTagName("div")[17].appendChild(score_pTag);
+    score.onchange = function() {
+      score_pTag.innerHTML = score.value;
+    }
+  </script>
+  {% endblock content %}
