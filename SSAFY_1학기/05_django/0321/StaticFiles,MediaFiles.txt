@@ -11,12 +11,14 @@ Static Files 구성하기
 
 setting.py 안에 INSTALLED_APPS에 django.contrib.staticfiles가 추가 되어 있음
 
+# 기본 static 파일이 있는 경로즉
+# 해당 앱/static/해당앱 이름 폴더
 STATIC_URL = '/static/' => 반드시 (/)로 끝나야 함
 
 추가적으로 설정해야 하는것
 
 STATICFILES_DIRS=[
-    BASE_DIR / '내가 이미지 파일 저장할 경로',
+    BASE_DIR / '추가경로에 있는 static file 폴더',
 ]
 
 - 가져오는 방법
