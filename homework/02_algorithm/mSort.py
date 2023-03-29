@@ -16,7 +16,7 @@ def mergeSort(arr):
 
     l = r = idx = 0
     # 만약 하나라도 분할된 배열들의 탐색이 종료 되면
-    while l > len(left) or r > len(right):
+    while l < len(left) and r < len(right):
         # 왼쪽값이 작으면 먼저 넣고
         if left[l] <= right[r]:
             arr[idx] = left[l]
@@ -30,13 +30,13 @@ def mergeSort(arr):
     # 왼쪽 배열이 남았다면
     if r == len(right):
         for i in range(l, len(left)):
-            arr[idx] = left[l]
+            arr[idx] = left[i]
             idx += 1
 
     # 오른쪽 배열이 남아있다면
     elif l == len(left):
         for i in range(r, len(right)):
-            arr[idx] = left[r]
+            arr[idx] = right[i]
             idx += 1
 
     return arr
@@ -44,6 +44,6 @@ def mergeSort(arr):
 for tc in range(1, T + 1):
     N = int(input())
     arr = list(map(int, input().split()))
-    ans1 = mergeSort(arr)
     ans2 = 0
+    ans1 = mergeSort(arr)
     print('#{} {} {}'.format(tc, ans1[N//2], ans2))
