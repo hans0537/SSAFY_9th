@@ -9,6 +9,7 @@ for tc in range(1, T + 1):
 
     for i in range(n):
         num = int(hex_num[i], 16)  # 10 진수로 바꾸고
+        print(num)
         # 16진수 => 2진수 * 4
         # 3번, 2번, 1번, 0번 비트 검사해서 1 포함하면 1 아니면 0
         for j in range(3, -1, -1):
