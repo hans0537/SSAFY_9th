@@ -17,19 +17,16 @@ def dfs(cx, cy, cnt, cut):
         if is_valid(nx, ny):
             # 일단 나보다 작으면 가본다
             if arr[cx][cy] > arr[nx][ny]:
-
-            if cut and arr[cx][cy] <= arr[nx][ny]:
-                tmp = arr[nx][ny]
-                # 한칸만 줄인다
-                arr[nx][ny] = arr[cx][cy] - 1
-                v[nx][ny] = 1
-                dfs(nx, ny, cnt + 1, cut - 1)
-                v[nx][ny] = 0
-                arr[nx][ny] = tmp
-            else:
                 v[nx][ny] = 1
                 dfs(nx, ny, cnt + 1, cut)
                 v[nx][ny] = 0
+            elif cut:   # 자를 기회가 남아 있으면
+                for h in range(arr[nx][ny] - K, arr[nx][ny]):
+                    if h < arr[cx][cy]: # 만약 깍은 위치가 나보다 작으면 그 높이로 바꾼뒤 가본다
+                        tmp = arr[nx][ny]
+                        arr[nx][ny] = h
+                        dfs(nx, ny, cnt + 1, cut - 1)
+                        arr[nx][ny] = tmp
     else:
         ans = max(ans, cnt)
         return
