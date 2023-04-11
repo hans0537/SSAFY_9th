@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>DETAIL</h1>
+  <hr>
+
+  <h1>{{question.title}}</h1>
+  <h3>Red TEAM</h3>
+  <h5>=> {{question.issue_a}}</h5>
+  
+  <h3>Blue TEAM</h3>
+  <h5>=> {{question.issue_b}}</h5>
+{% endblock content %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{{user.username}}님의 프로필</h1>
+  <hr>
+  <h3>{{user.username}}'s 게시글</h3>
+  {% for ua in user_articles %}
+    <p>제목 : {{ua.title}} <a href="{% url 'articles:detail' ua.pk %}">[상세보기]</a> </p>
+  {% endfor %}
+  <hr>
+  <h3>{{user.username}}'s 좋아요한 게시글</h3>
+  {% for ula in user_like_articles %}
+    <p>제목 : {{ula.title}} <a href="{% url 'articles:detail' ula.pk %}">[상세보기]</a> </p>
+  {% endfor %}
+  <hr>
+  <a href="{% url 'articles:index' %}">메인으로 돌아가기</a>
+{% endblock content %}
