@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{{ user.username }}님의 프로필</h1>
+  <p>팔로잉 : {{user.followings.count}} | 팔로워 : {{user.followers.count}}</p>
+  {% if request.user != user %}
+    <form action="{% url 'accounts:follow' user.pk %}" method="POST">
+      {% csrf_token %}
+      {% if request.user in user.followers.all %}
+        <button type="submit" class="btn btn-danger">팔로우 취소</button>
+      {% else %}
+        <button type="submit" class="btn btn-danger">팔로우</button>
+      {% endif %}
+
+    </form>
+  {% endif %}
+  <hr>
+
+  <h1>{{user.username}}'s 게시글</h1>
+  {% for movie in user.movie_set.all %}
+    <a href="{% url 'movies:detail' movie.pk %}">{{movie.title}}</a>
+  {% endfor %}
+  <hr>
+  
+  <h1>{{user.username}}'s 댓글</h1>
+  {% for comment in user.comment_set.all %}
+    <a href="{% url 'movies:detail' comment.movie.pk %}">{{comment.movie.title}}</a>
+  {% endfor %}
+  <hr>
+
+  <a href="{% url 'movies:index' %}" class="btn btn-success">이전</a>
+
+{% endblock content %}
