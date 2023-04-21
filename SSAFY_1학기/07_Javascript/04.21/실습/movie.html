@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <script src="./movie.js"></script>
+</head>
+<body>
+    <script>
+        // 영화 정보 가져오기
+        let movies = movieInfo.results
+
+        // 최상위 div 생성
+        let div1 = document.createElement('div')
+        div1.classList.add('container')
+        document.body.appendChild(div1)
+
+        let div2 = document.createElement('div')
+        div2.classList.add('row', 'row-cols-1', 'row-cols-md-3', 'g-4')
+        div1.appendChild(div2)
+
+        // 모든 영화 정보에 대해 카드 생성
+        movies.forEach(e => {
+          let div3 = document.createElement('div')
+          div3.classList.add('col')
+
+          let div4 = document.createElement('div')
+          div3.classList.add('card', 'h-100')
+          
+          let img = document.createElement('img')
+          img.setAttribute('src', `https://image.tmdb.org/t/p/w500${e.poster_path}`)
+          // img.src = `https://image.tmdb.org/t/p/w500${e.poster_path}`
+          img.classList.add('card-img-top')
+
+          let div5 = document.createElement('div')
+          div5.classList.add('card-body')
+
+          let h = document.createElement('h5')
+          h.classList.add('card-title')
+          h.innerText = e.title
+
+          let p = document.createElement('p')
+          p.classList.add('card-text')
+          p.innerText = e.release_date
+          
+          div5.appendChild(h)
+          div5.appendChild(p)
+
+          div4.appendChild(img)
+          div4.appendChild(div5)
+          
+          div3.appendChild(div4)
+
+          div2.appendChild(div3)
+        });
+        
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+</body>
+</html>

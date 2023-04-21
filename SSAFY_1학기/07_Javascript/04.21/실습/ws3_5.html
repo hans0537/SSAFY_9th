@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    section {
+      height: 50vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .myInputs {
+      display: block;
+      outline: none;
+      width: 200px;
+      margin: 15px;
+      padding: 15px 10px;
+      text-align: center;
+      border: 2px solid black;
+      border-radius: 5px;
+      float: left;
+    }
+ 
+    .myInputs:focus {
+      /* focus 발생시 변경될 속성 */
+      border-color: green;
+    }
+
+    .myButton{
+      display: block;
+      background: none;
+      outline: none;
+      margin: 20px auto;
+      padding: 10px 10px;
+      text-align: center;
+      border: 2px solid #55b2cf;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.5s;
+    }
+
+    .myButton:hover {
+      color: white;
+      background-color: #55b2cf;
+    }
+
+  </style>
+</head>
+<body>
+  <section>
+    <form>
+        <input class="myInputs" placeholder="todo 입력" type="text" id="todo" />
+        <button type="submit" class="myButton">Add</button>
+    </form>
+    
+    <div>
+      <ul>
+      </ul>
+    </div>
+</section>
+  
+  <script>
+    const form = document.querySelector('form')
+
+    form.addEventListener('submit', () => {
+        event.preventDefault()
+        const todo = document.querySelector('#todo')
+        if (todo.value == "") {
+            alert("값을 입력해 주세요!")
+        }else{
+            const li = document.createElement('li')
+            li.innerText = todo.value
+
+            document.querySelector('ul').appendChild(li)
+            todo.value = ""
+        }
+    })
+  </script>
+</body>
+</html>
+
+
+

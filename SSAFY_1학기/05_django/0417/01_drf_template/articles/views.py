@@ -17,7 +17,7 @@ def article_list(request):
     elif request.method == "POST":
         serializer = ArticleListSerializer(data=request.data)
         # raise_exception=True 를 인자로 보내주면 
-        # 유횽성 실패하면 400에러 메세지를 알아서 처리해준다
+        # 유효성 실패하면 400에러 메세지를 알아서 처리해준다
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

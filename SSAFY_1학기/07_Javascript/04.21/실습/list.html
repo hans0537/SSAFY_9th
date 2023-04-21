@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const ul_tag = document.createElement('ul')
+        document.body.appendChild(ul_tag)
+        
+        for (let i = 0; i < 3; i++) {
+            let fruit = prompt("과일을 입력하세요")
+
+            const li_tag = document.createElement('li')
+            li_tag.innerText = fruit
+
+            ul_tag.appendChild(li_tag)
+        }
+
+    </script>
+</body>
+</html>

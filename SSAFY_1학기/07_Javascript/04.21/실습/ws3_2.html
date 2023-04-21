@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        const tlist = ['양치하기', '공부하기', '휴식하기']
+
+        const h1_tag = document.createElement('h1')
+        h1_tag.innerText = "오늘의 Todo"
+        document.body.appendChild(h1_tag)
+
+        const ul_tag = document.createElement('ul')
+        for (let i = 0; i < 3; i++) {
+            const li_tag = document.createElement('li')
+            li_tag.innerText = tlist[i]
+            ul_tag.appendChild(li_tag)
+        }
+
+        document.body.appendChild(ul_tag)
+    </script>
+</body>
+</html>
