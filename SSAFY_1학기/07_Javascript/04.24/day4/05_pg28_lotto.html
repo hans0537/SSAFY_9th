@@ -30,27 +30,32 @@
 
   <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
   <script>
+    // 버튼을 클릭하면 로또 번호 뽑아주기
     const button = document.querySelector('#lotto-btn')
 
-    button.addEventListener('click', e => {
+    button.addEventListener('click', function () {
       const ballContainer = document.createElement('div')
       ballContainer.classList.add('ball-container')
-      
+
       // 로또 숫자 6개 뽑기
       const numbers = _.sampleSize(_.range(1, 46), 6)
-      // console.log(numbers)
+      // console.log(numbers) [3, 19, 12, 22, 6, 29]
 
       numbers.forEach(number => {
         const ball = document.createElement('div')
         ball.classList.add('ball')
         ball.innerText = number
-        
         ball.style.backgroundColor = 'crimson'
 
-        ballContainer.appendChild(ball)
+        // ball을 ballContainer에 넣어주기
+        ballContainer.appendChild(ball) 
+
       })
-      
+      // ball 6개가 ballContainer에 들어가있음
+      const result = document.querySelector('#result')
       result.appendChild(ballContainer)
+      
+
     })
 
   </script>

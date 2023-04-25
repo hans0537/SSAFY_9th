@@ -16,8 +16,8 @@
   <script>
     const formTag = document.querySelector('form')
 
-    const addTodo = e => {
-      e.preventDefault()  // form 제출 기능 막기
+    const addTodo = function (event) {
+      event.preventDefault() // form 제출 기능 막기
 
       const inputTag = document.querySelector('.inputData')
       const data = inputTag.value
@@ -30,12 +30,16 @@
         ulTag.appendChild(liTag)
   
         event.target.reset()
+
       } else {
-        alert('할일을 입력하세요!!')
+        alert('할일을 입력하세요.')
       }
-    } 
+
+
+    }
 
     formTag.addEventListener('submit', addTodo)
-</script>
+
+  </script>
 </body>
 </html>
