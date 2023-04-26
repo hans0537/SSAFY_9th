@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>DETAIL</h2>
+  <h3>{{ article.pk }} 번째 글</h3>
+  <hr>
+  <p>제목 : {{ article.title }}</p>
+  <p>내용 : {{ article.content }}</p>
+  <p>작성시각 : {{ article.created_at }}</p>
+  <p>수정시각 : {{ article.updated_at }}</p>
+  <hr>
+  {% if user == article.user %}
+    <a href="{% url 'articles:update' article.pk %}">[UPDATE]</a>
+    <form action="{% url 'articles:delete' article.pk %}" method="POST">
+      {% csrf_token %}
+      <input type="submit" value="DELETE">
+    </form>
+  {% endif %}
+  <a href="{% url 'articles:index' %}">[back]</a>
+  <hr>
+  <h4>댓글 목록</h4>
+  <ul id="comment-list">
+    {% for comment in comments %}
+      <li id="comment-{{comment.pk}}" style="display: block;">
+        {{ comment.user }} - {{ comment.content }}
+        {% if user == comment.user %}
+          <form action="{% url 'articles:comments_delete' article.pk comment.pk %}" method="POST" class="d-inline">
+            {% csrf_token %}
+            <input type="submit" value="DELETE">
+            <div class="comment_update btn btn-secondary" id="{{comment.pk}}">수정</div>
+          </form>
+        {% endif %}
+      </li>
+
+      <li id="update-{{comment.pk}}" style="display: none;">
+        {% if user == comment.user %}
+          <form class="update-form" data-comment-id="{{ comment.pk }}">
+            {% csrf_token %}
+            <input type="text" name="content" value="{{comment.content}}">
+            <input type="submit" value="수정">
+          </form>
+        {% endif %}
+      </li>
+
+    {% empty %}
+      <p>댓글이 없어요..</p>
+    {% endfor %}
+  </ul>
+
+  <hr>
+  {% if request.user.is_authenticated %}
+    <form id="comment-form" data-article-id="{{article.pk}}">
+      {% csrf_token %}
+      {{ comment_form }}
+      <input type="submit">
+    </form>
+  {% else %}
+    <a href="{% url 'accounts:login' %}">[댓글을 작성하려면 로그인하세요.]</a>
+  {% endif %}
+{% endblock content %}
+
+{% block script %}
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const form = document.querySelector('#comment-form')
+    const input = document.querySelector('[name=content]')
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault()
+      const content = input.value
+      const articleId = event.target.dataset.articleId
+
+      const baseURL = "http://127.0.0.1:8000/"
+      
+      // 1. 첫번째 방법 데이터를 보낼때 formdata형식으로 보내주기
+      const data = new FormData()
+      data.append("content", content)
+
+      axios({ 
+        method: 'post',
+        baseURL,
+        url: `/articles/${articleId}/comments/`,
+        headers: {'X-CSRFToken': csrftoken},
+        data: {
+          "content" : content
+        },
+      })
+      .then((response) => {
+        const {article_pk, comment_pk} = response.data
+        const ul = document.querySelector("#comment-list")
+        const li1 = document.createElement('li')
+        li1.setAttribute('id', `comment-${comment_pk}`)
+        li1.style.display = 'block'
+
+        li1.innerHTML = `
+          {{request.user.username}} - ${content}
+          <form action="/articles/${article_pk}/comments/${comment_pk}/delete/" method="POST" class="d-inline">
+            {%csrf_token%}
+            <input type="submit" value="delete" />
+            <div class="comment_update btn btn-secondary" id="{{comment.pk}}">수정</div>
+          </form>  
+        `
+        const li2 = document.createElement('li')
+        li2.setAttribute('id', `update-${comment_pk}`)
+        li2.style.display = 'none'
+        li2innerHTML = `
+          <form class="update-form" data-comment-id="{{ comment.pk }}">
+            {% csrf_token %}
+            <input type="text" name="content" value="{{comment.content}}">
+            <input type="submit" value="수정">
+          </form>
+        `
+        
+        ul.appendChild(li1)
+        ul.appendChild(li2)
+        input.value = ""
+
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    })
+
+    const comments = document.querySelectorAll('.comment_update')
+
+    comments.forEach(c => {
+      c.addEventListener('click', function(event) {
+        pk = event.target.id
+        const cli = document.querySelector(`#comment-${pk}`)
+        const uli = document.querySelector(`#update-${pk}`)
+
+        if(cli.style.display=='none'){ 		
+          cli.style.display = 'block'; 	
+        }else{ 		
+          cli.style.display = 'none'; 	
+        } 
+        
+        if(uli.style.display=='none'){ 		
+          uli.style.display = 'block'; 	
+        }else{ 		
+          uli.style.display = 'none'; 	
+        } 
+      })
+    })
+    
+    const updateForms = document.querySelectorAll('.update-form')
+    updateForms.forEach(u => {
+      u.addEventListener('submit', function(event) {
+        event.preventDefault()
+
+        const update_content = event.target.querySelector('input[name="content"]').value
+        const commentId = event.target.dataset.commentId
+        const baseURL = "http://127.0.0.1:8000/"
+        
+        const csrf = event.target.querySelector('input[name="csrfmiddlewaretoken"]').value
+        const update_data = new FormData()
+        update_data.append("content", update_content)
+
+        axios({
+          method:'post',
+          baseURL,
+          url: `/articles/comment/${commentId}/update/`,
+          headers: {'X-CSRFToken': csrf},
+          update_data,
+        })
+        .then((response) => {
+          const comment_pk = response.data.comment_pk
+
+          const cli = document.querySelector(`#comment-${comment_pk}`)
+          const uli = document.querySelector(`#update-${comment_pk}`)
+          
+          cli.innerText = `{{request.user.username}} - ${update_content}`
+
+          
+          if(cli.style.display=='block'){ 		
+            cli.style.display = 'none'; 	
+          }else{ 		
+            cli.style.display = 'block'; 	
+          } 
+          
+          if(uli.style.display=='block'){ 		
+            uli.style.display = 'none'; 	
+          }else{ 		
+            uli.style.display = 'block'; 	
+          } 
+          
+        })
+      })
+    })
+  </script>
+{% endblock script %}
