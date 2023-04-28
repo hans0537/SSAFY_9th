@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Community</h1>
+  <hr>
+  {% for review in reviews %}
+    <p>작성자 : <a href="{% url 'accounts:profile' review.user.username %}">{{ review.user }}</a></p>
+    <p>글 번호: {{ review.pk }}</p>
+    <p>글 제목: {{ review.title }}</p>
+    <p>글 내용: {{ review.content }}</p>
+
+    {% if request.user.is_authenticated %}
+      <form class="like_forms" data-review-id="{{review.pk}}">
+        {% csrf_token %}
+        {% if request.user in review.like_users.all %}
+          <button type="submit" style="background: none; border: none;">
+            <i id="likeBtn_{{review.pk}}"  class="fa-solid fa-heart" style="color: #ff0000;"></i>
+          </button>
+        {% else %}
+          <button type="submit" style="background: none; border: none;">
+            <i id="likeBtn_{{review.pk}}" class="fa-regular fa-heart" style="color: #ff0000;"></i>
+          </button>
+        {% endif %}
+      </form>
+    {% endif %}
+
+    <p>
+      <span id="likeCnt">{{ review.like_users.all|length }}</span> 명이 이 글을 좋아합니다.
+    </p>
+    <a href="{% url 'community:detail' review.pk %}">[detail]</a>
+    <hr>
+  {% endfor %}
+{% endblock %}
+
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  const like_forms = document.querySelectorAll('.like_forms')
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+  const baseURL = 'http://127.0.0.1:8000/'
+
+  like_forms.forEach(e => {
+    e.addEventListener('submit', function(event) {
+      event.preventDefault()
+
+      const reviewId = event.target.dataset.reviewId
+
+      axios({
+        method: 'post',
+        baseURL,
+        url: `community/${reviewId}/like/`,
+        headers: {'X-CSRFToken': csrftoken},
+      })
+      .then((response) => {
+
+        const is_liked = response.data.is_liked
+        const likeBtn = document.querySelector(`#likeBtn_${reviewId}`)
+        const likeCnt = document.querySelector('#likeCnt')
+
+        if (is_liked) {
+          likeBtn.classList.toggle('fa-solid')
+          likeBtn.classList.toggle('fa-regular')
+        } else {
+          likeBtn.classList.toggle('fa-regular')
+          likeBtn.classList.toggle('fa-solid')
+        }
+
+        likeCnt.innerText = response.data.like_cnt
+
+      })
+
+    })
+  })
+
+</script>
+
+{% endblock script %}

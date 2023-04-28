@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>DETAIL</h1>
+<hr />
+
+{% if movie.poster_path %}
+  <img src="{{movie.poster_path}}" />
+{% endif %}
+
+<div id='movie-content'>
+    <h5>{{ movie.title }}</h5>
+    <p class="card-text">개봉일 : {{ movie.release_date }}</p>
+    <p class="card-text">평점 : {{ movie.vote_average }}</p>
+    <p class="card-text">장르 : 
+      {% for g in movie.genres.all %}
+      <span>{{g.name}}</span>
+      {% endfor %}
+    </p>
+    <p class="card-text">줄거리 : {{ movie.overview }}</p>
+    <a href="{% url 'movies:index' %}" class="btn btn-success mt-3">BACK</a>
+</div>
+
+
+{% endblock %}
+
+

@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2 class="text-center">DETAIL</h2>
+  <h3>{{ review.pk }} 번째 글</h3>
+  <hr>
+  <p>제목: {{ review.title }}</p>
+  <p>영화 제목: {{ review.movie_title }}</p>
+  <p>내용: {{ review.content }}</p>
+  <p>평점: {{ review.rank }}</p>
+  <p>작성 시각: {{ review.created_at }}</p>
+  <p>수정 시각: {{ review.updated_at }}</p>
+  <hr>
+
+
+  <h4>댓글 목록</h4>
+  {% if comments|length %}
+    <p id="comment_counts"><b>{{ comments|length }}개의 댓글이 있습니다.</b></p>
+  {% endif %}
+  <ul id="comment-list">
+    {% for comment in comments %}
+      {% if not comment.parent_comment_id %}
+        <li>
+          <a href="{% url 'accounts:profile' comment.user %}">{{comment.user}}</a> : {{comment.content}}
+
+          {% if request.user.is_authenticated %}
+            <input type="button" value="대댓글" onclick="comment({{comment.pk}}, 1);" class="btn btn-primary btn-sm">
+          {% else %}
+
+          <input type="button" value="대댓글" onclick="comment(0, 0);" class="btn btn-primary">
+          {% endif %}
+          <ul id="coco-{{comment.pk}}">
+            {% for coco in comment.comment_set.all %}
+              <li>
+                <a href="{% url 'accounts:profile' coco.user %}">{{coco.user}}</a> : {{coco.content}}
+              </li>
+            {% endfor %}
+
+            <!-- 대댓글 작성 폼-->
+            <form id='{{comment.pk}}' class="d-none cocoment_form" data-comment-id="{{comment.pk}}" data-review-id="{{review.pk}}">
+              {% csrf_token %}
+              {{comment_form.as_table}}
+              <input type="submit" value="제출">
+            </form>
+          
+          </ul>
+
+        </li>
+      {% endif %}
+    {% empty %} 
+      <p id="comment_counts"><b>댓글이 없어요..</b></p>
+    {% endfor %}
+  </ul>
+
+  <hr>
+  
+  {% if user.is_authenticated %}
+    <form id="comment_form" data-review-id="{{review.pk}}">
+      {% csrf_token %}
+      {{ comment_form }}
+      <input type="submit">
+    </form>
+  {% else %}
+    <a href="{% url 'accounts:login' %}">[댓글을 작성하려면 로그인하세요.]</a>
+  {% endif %}
+  <a href="{% url 'community:index' %}">[back]</a>
+{% endblock  %}
+
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  function comment(pk, c) {
+    if (c) {
+      let c = document.getElementById(pk);
+      c.classList.toggle('d-none');
+    }else {
+      alert('로그인 후 이용하세요!!');
+    }
+  }
+
+  // 댓글 AJAX 요청
+  const comment_form = document.querySelector('#comment_form')
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+  
+  comment_form.addEventListener('submit', function (event) {
+    event.preventDefault()
+    const input = event.target.querySelector('[name=content]')
+    const content = input.value
+    const reviewId = event.target.dataset.reviewId
+
+    const baseURL = "http://127.0.0.1:8000/"
+
+    axios({ 
+      method: 'post',
+      baseURL,
+      url: `/community/${reviewId}/comments/create/`,
+      headers: {'X-CSRFToken': csrftoken},
+      data: {
+        'content' : content
+      }
+    })
+    .then((response) => {
+      const {user, review_pk, comment_pk, comment_counts} = response.data
+
+      const ul = document.querySelector("#comment-list")
+      const li = document.createElement('li')
+
+      li.innerHTML = `
+      <a href="/accounts/profile/${user}/"> ${user} </a> : ${content}
+
+      {% if request.user.is_authenticated %}
+        <input type="button" value="대댓글" onclick="comment(${comment_pk}, 1);" class="btn btn-primary btn-sm">
+      {% else %}
+  
+      <input type="button" value="대댓글" onclick="comment(0, 0);" class="btn btn-primary">
+      {% endif %}
+      <ul>
+      {% for coco in comment.comment_set.all %}
+          <li>
+          <a href="/accounts/profile/{{coco.user}}/">{{coco.user}}</a> : {{coco.content}}
+          </li>
+      {% endfor %}
+  
+      <!-- 대댓글 작성 폼-->
+      <form id='${comment_pk}' class="d-none cocoment_form" data-comment-id="${comment_pk}" data-review-id="${review_pk}">
+          {% csrf_token %}
+          {{comment_form.as_table}}
+          <input type="submit" value="제출">
+      </form>
+      
+      </ul>  
+      `
+      
+      ul.appendChild(li)
+      input.value = ""
+      
+      document.querySelector('#comment_counts').innerHTML = `
+      <b>${comment_counts}개의 댓글이 있습니다.</b>
+      `
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  })
+  
+  // 대댓글들 AJAX 요청
+  const cocoment_forms = document.querySelectorAll('.cocoment_form')
+  
+  cocoment_forms.forEach(f => {
+    f.addEventListener('submit', function (event) {
+      event.preventDefault()
+      const input = event.target.querySelector('[name=content]')
+      const content = input.value
+      const reviewId = event.target.dataset.reviewId
+      const commentId = event.target.dataset.commentId
+
+      const baseURL = "http://127.0.0.1:8000/"
+      axios({ 
+        method: 'post',
+        baseURL,
+        url: `/community/${reviewId}/co_comments/${commentId}/`,
+        headers: {'X-CSRFToken': csrftoken},
+        data: {
+          'content' : content
+        }
+      })
+      .then((response) => {
+        const {user, review_pk, parent_comment_pk, comment_pk, comment_counts} = response.data
+        
+        const ul = document.querySelector(`#coco-${parent_comment_pk}`)
+        const li = document.createElement('li')
+
+        li.innerHTML = `
+          <a href="/accounts/profile/${user}">${user}</a> : ${content}
+          `
+          
+        ul.insertBefore(li, event.target)
+        input.value = ""
+
+        document.querySelector('#comment_counts').innerHTML = `
+        <b>${comment_counts}개의 댓글이 있습니다.</b>
+        `
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    })
+  })
+
+</script>
+{% endblock script %}
