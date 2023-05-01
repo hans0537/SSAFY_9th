@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .completed {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <select name="" id="" v-model="filter_type" @change="selectFilter"> 
+            <option value="전체">전체</option>
+            <option value="진행중">진행중</option>
+            <option value="완료">완료</option>
+        </select>
+        <!-- @keyup.enter : 엔터키 누르면 -->
+        <input type="text" v-model="content" @keyup.enter="addTodo">
+        <button @click="addTodo">+</button>
+
+        <ul>
+            <li v-for="todo in getTodoList"><input type="checkbox" v-model="todo.completed"><span :class="{completed : todo.completed}">{{todo.content}}</span></li>
+        </ul>
+
+        <button @click="deleteCompleted">완료된 할 일 지우기</button>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        // 로컬스토리지에서 key가 todos로 되어있는 value를 가져온다.
+        // 주의할점 : 로컬스토리지의 value는 모두 string이다.
+        const todoStorage = window.localStorage.getItem("todos")
+
+        // 로컬스토리지에 key를 todos로 해서 값 저장
+        const updateStorage = function(todos) {
+            // JSON.stringify => json 객체 string 으로
+            window.localStorage.setItem("todos", JSON.stringify(todos))
+        }
+
+        const app = new Vue({
+            el: '#app',
+            data: {
+                todo_list: JSON.parse(todoStorage) || [],
+                filter_type: "전체",
+                content: "" // input과 양방향 바인딩
+            },
+            methods: {
+                selectFilter(){
+                    console.log(this.filter_type)
+                },
+                addTodo(){
+                    this.todo_list.push({"content" : this.content, "completed" : false})
+                    this.content = ""
+
+                    // updateStorage(this.todo_list)
+                },
+                deleteCompleted(){
+                    this.todo_list = this.todo_list.filter((todo) => {
+                        return !todo.completed
+                    })
+
+                    // updateStorage(this.todo_list)
+                },
+            },
+            computed: {
+                getTodoList() {
+                    let result = []
+                    //전체
+                    if (this.filter_type === "전체") {
+                        result = this.todo_list
+                    }else if (this.filter_type === "진행중") {
+                        result = this.todo_list.filter((todo) => {return !todo.completed})
+                    }else {
+                        result = this.todo_list.filter((todo) => {return todo.completed})
+                    }
+                    return result
+                }
+            },
+            watch: {
+                todo_list: {
+                    // 1. vue는 배열이나 객체를 watch 할때 속성 내부가 변경되었다고 생각하지 않는다.
+                    // 속성 내부를 검사하기를 원할때 사용 하는 속성: deep
+                    deep: true,
+
+                    // 2. todo_list가 변경될때 실행하고 싶은 코드가 있다면 handler 함수에 적어주기
+                    handler : function(todos){
+                        updateStorage(todos)
+                    }
+                }
+            }
+        })
+
+    </script>
+</body>
+</html>

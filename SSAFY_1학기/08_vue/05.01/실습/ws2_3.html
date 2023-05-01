@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .checked {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Todo List</h1>
+        <input type="text" v-model="todo">
+        <button @click="add">+</button>
+
+        <ul>
+            <li v-for="todo in todoList">
+                <input type="checkbox" v-model="todo.checked"><span :class="{checked : todo.checked}">{{ todo.todo }}</span> 
+            </li>
+        </ul>
+
+        <button @click="deleteCompleted">완료 목록 삭제</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                todo: '',
+                todoList: [],
+            },
+            methods: {
+                add(){
+                    this.todoList.push({"todo" : this.todo, "checked" : false})
+                    this.todo = ''
+                },
+                deleteCompleted() {
+                    this.todoList = this.todoList.filter((todo) => !todo.checked)
+                }
+            }
+        })
+    </script>
+</body>
+</html>
