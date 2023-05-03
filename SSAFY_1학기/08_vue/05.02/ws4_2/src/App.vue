@@ -30,7 +30,7 @@
         <div class="line"></div>
 
         <img src="./assets/ssafy-logo.png" alt="logo">
-    </div>
+      </div>
   </div>
   </div>
 </template>
