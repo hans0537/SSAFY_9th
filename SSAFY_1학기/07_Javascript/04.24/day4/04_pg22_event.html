@@ -73,6 +73,7 @@
     const message = document.createElement("li")
     message.innerText = "p 클릭"
     consoleSection.append(message)
+    // event.stopPropagation();
   })
 
   spanTag.addEventListener('click', function() {
@@ -81,7 +82,7 @@
     consoleSection.append(message)
 
     // 상위로 이벤트가 전파되지 않도록 중단한다.
-    event.stopPropagation();
+    // event.stopPropagation();
 
     //상위 뿐 아니라 같은 레벨로도 이벤트가 전파되지 않도록 중단한다.
     event.stopImmediatePropagation();
@@ -96,7 +97,7 @@
     consoleSection.append(message)
 
     // 상위로 이벤트가 전파되지 않도록 중단한다.
-    event.stopPropagation();
+    // event.stopPropagation();
     
   })
 
