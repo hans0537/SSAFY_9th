@@ -34,12 +34,12 @@ export default {
   width: 700px;
 }
 
-nav {
+/* nav {
 }
 
 nav a {
 }
 
 nav a.router-link-exact-active {
-}
+} */
 </style>
