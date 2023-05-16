@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     signUp() {
-      console.log('signup')
+      // console.log('signup')
       const username = this.username
       const password1 = this.password1
       const password2 = this.password2
@@ -38,6 +38,7 @@ export default {
       }
 
       this.$store.dispatch('signUp', payload)
+
     }
   }
 }

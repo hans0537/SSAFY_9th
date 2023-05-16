@@ -1,9 +1,10 @@
 <template>
   <div id="app">
     <nav>
-      <router-link :to="{ name: 'ArticleView' }">Articles</router-link> | 
-      <router-link :to="{ name: 'SignUpView' }">SignUpPage</router-link> | 
-      <router-link :to="{ name: 'LogInView' }">LogInPage</router-link>
+      <router-link to="/">Home</router-link> |
+      <router-link to="/article">Article</router-link> |
+      <router-link to="/login">Login</router-link> |
+      <router-link to="/signup">signup</router-link> 
     </nav>
     <router-view/>
   </div>

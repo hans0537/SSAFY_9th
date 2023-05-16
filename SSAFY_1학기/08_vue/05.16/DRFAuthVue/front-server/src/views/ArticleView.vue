@@ -1,9 +1,8 @@
 <template>
   <div>
     <h1>Article Page</h1>
-    <router-link :to="{ name: 'CreateView' }">[CREATE]</router-link>
-    <ArticleList />
     <hr>
+    <ArticleList />
   </div>
 </template>
 
@@ -25,14 +24,17 @@ export default {
   },
   methods: {
     getArticles() {
-      // 로그인이 되어 있으면 getArticles action 실행
       if (this.isLogin) {
         this.$store.dispatch('getArticles')
-      }else {
-        // 로그인 X 이면 login 페이지로 이동
-        alert('로그인 하십시오')
-        this.$router.push({name:'LogInView'})
+      } else {
+        alert('로그인이 필요한 페이지입니다...')
+        this.$router.push({ name: 'LogInView' })
       }
+
+
+      // 로그인이 되어 있으면 getArticles action 실행
+      // 로그인 X라면 login 페이지로 이동
+
     }
   }
 }
