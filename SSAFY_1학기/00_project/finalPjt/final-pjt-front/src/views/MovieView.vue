@@ -1,0 +1,334 @@
+<template>
+  <div>
+    <h1>movie</h1>
+    <!--Main layout-->
+    <main>
+    <div class="container">
+      <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark mt-3 mb-5 shadow p-2" style="background-color: #607D8B">
+      <!-- Container wrapper -->
+      <div class="container-fluid">
+
+        <!-- Navbar brand -->
+        <a class="navbar-brand" href="#">카테고리:</a>
+
+        <!-- Toggle button -->
+        <button 
+          class="navbar-toggler" 
+          type="button" 
+          data-mdb-toggle="collapse" 
+          data-mdb-target="#navbarSupportedContent2" 
+          aria-controls="navbarSupportedContent2" 
+          aria-expanded="false" 
+          aria-label="Toggle navigation">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Collapsible wrapper -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent2">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+            <!-- Link -->
+            <li class="nav-item acitve">
+              <a class="nav-link text-white" href="#">전체</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="#" @click="genreSelect" v-if="genreTag">{{selectedGenre}}</a>
+
+              <b-form-select v-else v-model="selectedGenre" :options="genres" class="mb-3"  @change="genreSelect">
+              </b-form-select>
+
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="#">평점순</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white" href="#">관람객 순</a>
+            </li>
+
+          </ul>
+
+          <!-- Search -->
+          <form class="w-auto py-1" style="max-width: 12rem">
+            <input type="search" class="form-control rounded-0" placeholder="Search" aria-label="Search">
+          </form>
+          <span class="ms-3" id="search-addon">
+            <i class="fas fa-search"></i>
+          </span>
+        </div>
+      </div>
+      <!-- Container wrapper -->
+    </nav>
+    <!-- Navbar -->
+      
+    <!-- Products -->
+      <section>
+      <div class="text-center">
+        <div class="row">
+          
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card">
+              <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
+                data-mdb-ripple-color="light">
+                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12.jpg"
+                  class="w-100" />
+                <a href="#!">
+                  <div class="mask">
+                    <div class="d-flex justify-content-start align-items-end h-100">
+                      <h5><span class="badge bg-dark ms-2">NEW</span></h5>
+                    </div>
+                  </div>
+                  <div class="hover-overlay">
+                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                  </div>
+                </a>
+              </div>
+              <div class="card-body">
+                <a href="" class="text-reset">
+                  <h5 class="card-title mb-2">Denim shirt</h5>
+                </a>
+                <a href="" class="text-reset ">
+                  <p>Shirt</p>
+                </a>
+                <h6 class="mb-3 price">120$</h6>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card">
+              <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
+                data-mdb-ripple-color="light">
+                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/13.jpg"
+                  class="w-100" />
+                <a href="#!">  
+                  <div class="mask">
+                    <div class="d-flex justify-content-start align-items-end h-100">
+                      <h5><span class="badge bg-primary ms-2">bestseller</span></h5>
+                    </div>
+                  </div>
+                  <div class="hover-overlay">
+                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                  </div>
+                </a>
+              </div>
+              <div class="card-body">
+                <a href="" class="text-reset">
+                  <h5 class="card-title mb-2">Sweatshirt</h5>
+                </a>
+                <a href="" class="text-reset ">
+                  <p>Sport wear</p>
+                </a>
+                <h6 class="mb-3 price">139$</h6>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card">
+              <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
+                data-mdb-ripple-color="light">
+                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/14.jpg"
+                  class="w-100" />
+                <a href="#!">              
+                  <div class="hover-overlay">
+                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                  </div>
+                </a>
+              </div>
+              <div class="card-body">
+                <a href="" class="text-reset">
+                  <h5 class="card-title mb-2">Grey blouse</h5>
+                </a>
+                <a href="" class="text-reset ">
+                  <p>Sport wear</p>
+                </a>
+                <h6 class="mb-3 price">99$</h6>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card">
+              <div class="bg-image hover-zoom ripple" data-mdb-ripple-color="light">
+                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/15.jpg"
+                  class="w-100" />
+                <a href="#!">
+                  <div class="mask">
+                    <div class="d-flex justify-content-start align-items-end h-100">
+                      <h5><span class="badge sale-badge ms-2">-10%</span></h5>
+                    </div>
+                  </div>
+                  <div class="hover-overlay">
+                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                  </div>
+                </a>
+              </div>
+              <div class="card-body">
+                <a href="" class="text-reset">
+                  <h5 class="card-title mb-2">Black jacket</h5>
+                </a>
+                <a href="" class="text-reset ">
+                  <p>Outwear</p>
+                </a>
+                <h6 class="mb-3 price">
+                  <s>199$</s><strong class="ms-2 sale">179$</strong>
+                </h6>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card">
+              <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
+                data-mdb-ripple-color="light">
+                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/13.jpg"
+                  class="w-100" />
+                <a href="#!">              
+                  <div class="hover-overlay">
+                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                  </div>
+                </a>
+              </div>
+              <div class="card-body">
+                <a href="" class="text-reset">
+                  <h5 class="card-title mb-2">Sweatshirt</h5>
+                </a>
+                <a href="" class="text-reset ">
+                  <p>Sport wear</p>
+                </a>
+                <h6 class="mb-3 price">139$</h6>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card">
+              <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
+                data-mdb-ripple-color="light">
+                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/14.jpg"
+                  class="w-100" />
+                <a href="#!">
+                  <div class="mask">
+                    <div class="d-flex justify-content-start align-items-end h-100">
+                      <h5><span class="badge bg-success ms-2">Eco</span></h5>
+                    </div>
+                  </div>
+                  <div class="hover-overlay">
+                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                  </div>
+                </a>
+              </div>
+              <div class="card-body">
+                <a href="" class="text-reset">
+                  <h5 class="card-title mb-2">Grey blouse</h5>
+                </a>
+                <a href="" class="text-reset ">
+                  <p>Sport wear</p>
+                </a>
+                <h6 class="mb-3 price">99$</h6>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card">
+              <div class="bg-image hover-zoom ripple" data-mdb-ripple-color="light">
+                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/15.jpg"
+                  class="w-100" />
+                <a href="#!">              
+                  <div class="hover-overlay">
+                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                  </div>
+                </a>
+              </div>
+              <div class="card-body">
+                <a href="" class="text-reset">
+                  <h5 class="card-title mb-2">Black jacket</h5>
+                </a>
+                <a href="" class="text-reset">
+                  <p>Outwear</p>
+                </a>
+                <h6 class="mb-3 price">199$</h6>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card">
+              <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
+                data-mdb-ripple-color="light">
+                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12.jpg"
+                  class="w-100" />
+                <a href="#!">              
+                  <div class="hover-overlay">
+                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                  </div>
+                </a>
+              </div>
+              <div class="card-body">
+                <a href="" class="text-reset">
+                  <h5 class="card-title mb-2">Denim shirt</h5>
+                </a>
+                <a href="" class="text-reset ">
+                  <p>Shirt</p>
+                </a>
+                <h6 class="mb-3 price">120$</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+      
+    <!-- Pagination -->
+      <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3">
+      <ul class="pagination">
+        <li class="page-item disabled">
+          <a class="page-link" href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">4</a></li>
+        <li class="page-item"><a class="page-link" href="#">5</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>  
+    <!-- Pagination -->  
+    </div>
+    </main>
+    <!--Main layout-->
+  </div>
+</template>
+
+<script>
+export default {
+  name: "MovieView",
+  data() {
+    return {
+      genreTag: true,
+      selectedGenre: '장르',
+      genres: ['스릴러', '공포', '코미디']
+    }
+  },
+  methods: {
+    genreSelect() {
+      this.genreTag = !this.genreTag
+    }
+  }
+}
+</script>
+
+<style>
+
+</style>

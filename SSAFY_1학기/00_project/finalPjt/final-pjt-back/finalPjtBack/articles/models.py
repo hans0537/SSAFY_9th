@@ -12,9 +12,8 @@ class Article(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_articles', blank=True)
 
-
 class Comment(models.Model):
-    Article = models.ForeignKey(Article, on_delete=models.CASCADE)    
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)    
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     
     content = models.TextField()

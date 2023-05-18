@@ -1,15 +1,15 @@
 <template>
-  <div class="home">
+  <div class="home container">
     <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img src="@/assets/background.jpeg" class="d-block w-100" alt="...">
+          <img src="@/assets/background.jpeg" class="d-block w-100" style="height:300px;" alt="...">
         </div>
         <div class="carousel-item">
-          <img src="@/assets/logo.png" class="d-block w-100" alt="...">
+          <img src="@/assets/logo.png" class="d-block w-100" style="height:300px;" alt="...">
         </div>
         <div class="carousel-item">
-          <img src="@/assets/background.jpeg" class="d-block w-100" alt="...">
+          <img src="@/assets/background.jpeg" class="d-block w-100" style="height:300px;" alt="...">
         </div>
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
@@ -21,16 +21,46 @@
         <span class="visually-hidden">Next</span>
       </button>
     </div>
+    <LatestList/>
+
+    <UpComingList/>
+
+    <popularList />
   </div>
+
 </template>
 
 <script>
-
+import LatestList from '@/components/HomeMovieComponents/LatestList'
+import UpComingList from '@/components/HomeMovieComponents/UpComingList'
+import popularList from '@/components/HomeMovieComponents/popularList'
 
 export default {
   name: 'HomeView',
   components: {
-
+    LatestList,
+    UpComingList,
+    popularList
+  },
+  created() {
+    this.getLatest()
+    this.getUpComing()
+    this.getPopular()
+  },
+  methods: {
+    getLatest(){
+      this.$store.dispatch('getLatest')
+    },
+    getUpComing(){
+      this.$store.dispatch('getUpComing')
+    },
+    getPopular() {
+      this.$store.dispatch('popularMovie')
+    }
   }
 }
 </script>
+
+<style scoped>
+
+</style>

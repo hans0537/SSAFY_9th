@@ -174,3 +174,6 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME" : timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=3),
 }
+
+# 이메일 회원가입시 SMTP확인 차단
+EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'

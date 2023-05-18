@@ -28,7 +28,6 @@ def follow(request,user_pk):
     if request.method=='POST':
         user = get_object_or_404(get_user_model(),pk=user_pk)
         if user.followers.filter(pk=request.user.pk).exists():
-        # if request.user in person.followers.all():
             user.followers.remove(request.user)
         else:
             user.followers.add(request.user)

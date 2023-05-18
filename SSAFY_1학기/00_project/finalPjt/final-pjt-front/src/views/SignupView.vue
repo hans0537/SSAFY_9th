@@ -27,6 +27,20 @@
                     </div>
 
                     <div class="d-flex flex-row align-items-center mb-4">
+                      <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                      <div class="form-outline flex-fill mb-0">
+
+                        <b-form-input id="input-email" :class="{ 'active': email }" class="form-control border" style="margin-bottom: 0px;" v-model="email" :state="emailState" aria-describedby="input-email-feedback" trim></b-form-input>
+                        <label class="form-label" for="input-email">Your Email</label>
+
+                        <b-form-invalid-feedback id="input-email-feedback" style="text-align: right;">
+                          올바른 이메일 주소를 입력해주세요.
+                        </b-form-invalid-feedback>
+                      </div>
+                    </div>
+
+
+                    <div class="d-flex flex-row align-items-center mb-4">
                       <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                       <div class="form-outline flex-fill mb-0">
 
@@ -94,6 +108,7 @@ export default {
   data() {
     return {
       username: '',
+      email:'',
       password1: '',
       password2: '',
     }
@@ -101,6 +116,16 @@ export default {
   computed: {
     nameState(){
       return this.username.length >= 3 ? true: false
+    },
+    emailState(){
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+      if (emailRegex.test(this.email)) {
+        return true
+      } else {
+        return false
+      }
+
     },
     pwState(){
       return this.password1.length >= 10 ? true: false
@@ -111,11 +136,26 @@ export default {
   },
   methods: {
     signup() {
+      if (this.username.length < 3) {
+        alert("알파벳/숫자 3글자 이상 적어주세요")
+        return
+      } else if (!this.emailState) {
+        alert("올바른 이메일을 입력해주세요")
+        return
+      } else if (this.password1.length < 10) {
+        alert("비밀번호 10자 이상 적어주세요")
+        return
+      } else if (this.password1 !== this.password2){
+        alert("비밀번호가 일치하지 않습니다")
+        return
+      }
+
       axios({
         method: 'post',
         url: 'http://127.0.0.1:8000/auth/signup/',
         data: {
           username: this.username,
+          email: this.email,
           password1: this.password1,
           password2: this.password2
         }
@@ -124,7 +164,19 @@ export default {
         console.log(res)
         this.$store.dispatch('signup', res.data.access)
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        console.log(err)
+        const errData = err.response.data
+        if (errData) {
+          if(errData.username){
+            alert(errData.username[0])
+          }
+          
+          if(errData.email){
+            alert(errData.email)
+          }
+        }
+      })
     }
   }
 }
