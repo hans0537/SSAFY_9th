@@ -14,6 +14,7 @@ export default new Vuex.Store({
     createPersistedState(),
   ],
   state: {
+    articles: [],
     accessToken: null,
     latestList: null,
     upcomingList: null,
@@ -21,7 +22,7 @@ export default new Vuex.Store({
   },
   getters: {
     isLogin(state) {
-      return state.access ? true : false
+      return state.accessToken ? true : false
     }
   },
   mutations: {
@@ -33,20 +34,35 @@ export default new Vuex.Store({
       state.upcomingList = upcoming
     },
     
-    SAVE_ACCESS_TOKEN(state, access) {
-      state.accessToken = access
-      router.push({name: 'home'})
+    GET_ARTICLES(state, articles) {
+      state.articles = articles
     },
+
+    SAVE_SIGNUP_TOKEN(state, access) {
+      state.accessToken = access
+      router.push({name: 'login'})
+    },
+    SAVE_LOGIN_TOKEN(state, access) {
+      state.accessToken = access
+      router.go(-1)
+    },
+    
     GET_POPULAR(state,popular) {
       state.popularMovie = popular
+    },
+    LOGOUT(state) {
+      state.accessToken = null
     }
   },
   actions: {
     login(context, access) {
-      context.commit('SAVE_ACCESS_TOKEN', access)
+      context.commit('SAVE_LOGIN_TOKEN', access)
     },
     signup(context, access){
-      context.commit('SAVE_ACCESS_TOKEN', access)
+      context.commit('SAVE_SIGNUP_TOKEN', access)
+    },
+    logout(context){
+      context.commit('LOGOUT')
     },
 
     // 상영중인 최신 영화
@@ -77,18 +93,35 @@ export default new Vuex.Store({
         console.log(err)
       })
     },
+
+    // 인기영화
     popularMovie(context) {
       axios({
         method:'get',
         url:'http://127.0.0.1:8000/movies/',
-        headers: {
-          Authorization : `Bearer ${this.state.accessToken}`
-        }
       })
       .then(res =>{
         context.commit('GET_POPULAR',res.data)
       })
-    }
+    },
+
+    // 게시글 가져오기
+    getArticles(context) {
+      axios({
+        method: 'get',
+        url: 'http://127.0.0.1:8000/articles/',
+        headers: {
+          Authorization: `Bearer ${context.state.accessToken}`
+        }
+      })
+      .then((res) => {
+        console.log(res.data, context)
+        context.commit('GET_ARTICLES', res.data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    },
   },
   modules: {
   }

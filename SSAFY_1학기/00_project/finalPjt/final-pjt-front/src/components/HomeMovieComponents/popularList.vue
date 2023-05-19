@@ -1,16 +1,12 @@
 <template>
   <section id="trend" class="pt-4 pb-5 mt-5" >
     <div class="container">
-      <div class="row trend_1">
+      <div class="row trend_1" style="display:flex; justify-content: space-between;">
         <div class="col-md-6 col-6">
-        <div class="trend_1l">
-          <h4 class="mb-0"><i class="fa align-middle col_red me-1"></i> Popularity <span class="col_red">Movies</span></h4>
+          <h4 class="trend_1l" style="text-align:left;">Popularity <span class="col_red">Movies</span></h4>
         </div>
-        </div>
-        <div class="col-md-6 col-6">
-        <div class="trend_1r text-end">
-          <h6 class="mb-0"><a class="button" href="#"> View All</a></h6>
-        </div>
+        <div class="col-md-6 col-6 text-end">
+          <h6 class="mb-0"><a class="button" href="#" style="text-decoration: none;"> View All</a></h6>
         </div>
       </div>
   
@@ -25,7 +21,7 @@
           </div>
           
           <div class="carousel-inner"> 
-            <div class="carousel-item active" v-for="(movies, index) in popularMovie" :key="index">
+            <div class="carousel-item" v-for="(movies, index) in popularMovie" :key="index" :class="index===0 ? 'active' : ''">
               <div class="trend_2i row">
                 <popularListItem 
                 v-for="movie in movies" :key="movie.id" :movie="movie"/>

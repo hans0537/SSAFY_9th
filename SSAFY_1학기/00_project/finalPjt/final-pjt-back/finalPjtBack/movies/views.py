@@ -8,7 +8,6 @@ from rest_framework import status
 # Create your views here.
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def index(request):
     if request.method=='GET':
         movie = Movie.objects.all()

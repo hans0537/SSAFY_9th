@@ -2,17 +2,17 @@
 <section id="header" class="container mt-5">
   <nav class="navbar navbar-expand-md">
     <div class="container">
-      <div class="collapse navbar-collapse">
+      <div class="collapse navbar-collapse d-flex justify-content-center">
 
-        <div class="navbar-nav mb-0 d-flex justify-content-between">
+        <div class="navbar-nav mb-0">
           
-          <router-link to="/articles" class="nav-link">자유게시판</router-link>
+          <router-link to="/community/articles" class="nav-link" :class="{ 'active': $route.path === '/community/articles' }">자유게시판</router-link>
 
-          <router-link to="/" class="nav-link">영화 초성 퀴즈</router-link>
+          <router-link to="/community/choquiz" class="nav-link" :class="{ 'active': $route.path === '/community/choquiz' }">영화 초성 퀴즈</router-link>
 
-          <router-link to="/" class="nav-link">영화 줄거리 퀴즈</router-link>
+          <router-link to="/community/overquiz" class="nav-link" :class="{ 'active': $route.path === '/community/overquiz' }">영화 줄거리 퀴즈</router-link>
 
-          <router-link to="/" class="nav-link">영화 월드컵</router-link>
+          <router-link to="/community/worldcup" class="nav-link" :class="{ 'active': $route.path === '/community/worldcup' }">영화 월드컵</router-link>
         </div>
       </div>
     </div>
@@ -71,7 +71,7 @@
 
 <script>
 export default {
-
+  name: 'CommunityView',
 }
 </script>
 

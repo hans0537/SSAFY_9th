@@ -5,8 +5,7 @@
     <div class="w3-top" style="position: fixed;">
       <div class="w3-bar w3-white w3-wide w3-padding w3-card">
         <!-- Logo -->
-        <a href="#home" class="w3-bar-item w3-button"><b>BR</b> Architects</a>
-        {{isLogin}}
+        <router-link to="/" class="w3-bar-item w3-button"><b>BR</b> Architects</router-link>
         <!-- Float links to the right. Hide them on small screens -->
         <b-nav class="w3-right w3-hide-small">
           <span>
@@ -15,12 +14,12 @@
           <span>
             <b-nav-item><router-link to="/movie" class="w3-bar-item w3-button">Movie</router-link></b-nav-item>
           </span>
-            <b-nav-item><router-link to="/community" class="w3-bar-item w3-button">Community</router-link></b-nav-item>
+            <b-nav-item><router-link to="/community/articles" class="w3-bar-item w3-button">Community</router-link></b-nav-item>
           <span v-if="isLogin">
             <b-nav-item><router-link to="/mypage" class="w3-bar-item w3-button">MyPage</router-link></b-nav-item>
           </span>
           <span v-if="isLogin">
-            <b-nav-item><router-link to="/" class="w3-bar-item w3-button">Logout</router-link></b-nav-item>
+            <b-nav-item style="margin-top:8px;" @click="logout">Logout</b-nav-item>
           </span>
           <span v-if="!isLogin">
             <b-nav-item><router-link to="/login" class="w3-bar-item w3-button">Login</router-link></b-nav-item>
@@ -54,6 +53,9 @@
       }
     },
     methods: {
+      logout() {
+        this.$store.dispatch('logout')
+      }
     },
     // mounted() {
     //   this.isLogin = 

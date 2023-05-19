@@ -8,21 +8,13 @@
 
             <h3 class="mb-5">Sign in</h3>
             <div class="form-outline mb-4">
-              <b-form-input id="input-username" :class="{ 'active': username }" class="form-control form-control-lg border" style="margin-bottom: 0px;" v-model="username" :state="nameState" aria-describedby="input-username-feedback" trim></b-form-input>
+              <b-form-input id="input-username" :class="{ 'active': username }" class="form-control form-control-lg border" style="margin-bottom: 0px;" v-model="username" trim></b-form-input>
               <label class="form-label" for="input-username">Username</label>
-
-              <b-form-invalid-feedback id="input-username-feedback" style="text-align: right;">
-                알파벳/숫자 3글자 이상
-              </b-form-invalid-feedback>
             </div>
 
             <div class="form-outline mb-4">
-              <b-form-input id="input-password" class="form-control form-control-lg border" style="margin-bottom: 0px;" :class="{ 'active': password }" type="password" placeholder="PASSWORD" v-model="password" :state="pwState" aria-describedby="input-pw-feedback" trim></b-form-input>
+              <b-form-input id="input-password" class="form-control form-control-lg border" style="margin-bottom: 0px;" :class="{ 'active': password }" type="password" placeholder="PASSWORD" v-model="password" trim></b-form-input>
               <label class="form-label" for="input-password">Password</label>
-
-              <b-form-invalid-feedback id="input-pw-feedback" style="text-align: right;">
-                비밀번호 10자 이상
-              </b-form-invalid-feedback>
             </div>
 
             <!-- Checkbox -->
@@ -70,12 +62,6 @@ export default {
     }
   },
   computed: {
-    nameState(){
-      return this.username.length >= 3 ? true: false
-    },
-    pwState(){
-      return this.password.length >= 10 ? true: false
-    }
   },
   methods: {
     login() {
@@ -88,10 +74,12 @@ export default {
         }
       })
       .then((res) => {
-        console.log(res)
         this.$store.dispatch('login', res.data.access)
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        console.log(err)
+        alert('아이디와 비밀번호를 다시 확인해주세요')
+      }) 
     }
   }
 }
