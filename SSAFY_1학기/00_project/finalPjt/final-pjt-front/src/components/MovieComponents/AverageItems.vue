@@ -1,6 +1,6 @@
 <template>
   <div class="col-md-3 col-6">
-    <div class="trend_2im clearfix position-relative" @mouseover="showDetails = true" @mouseleave="showDetails = false">
+    <div class="trend_2im clearfix position-relative" @mouseover="showDetails = true" @mouseleave="showDetails = false" @click="openModal">
       <div class="trend_2im1 clearfix">
         <div class="grid">
           <figure class="effect-jazz mb-0">
@@ -9,7 +9,7 @@
               <div class="image-details" v-if="showDetails">
                 <h6 class="col_red">{{ movie.title }}</h6>
                 <p class="mb-2">{{ movie.overview.slice(0, 20) + "..." }}</p>
-                <p>{{ movie.vote_average }}</p>
+                <p>인기도 : {{ movie.popularity }}</p>
                 <span class="col_red">
                   <i v-for="index in 5" :key="index" class="fa" :class="['fa-star', index <= fullStarCount ? 'filled' : 'fa-regular', index === halfStarIndex ? 'fa-duotone fa-star-half-stroke' : '']" :style="index === halfStarIndex ? 'color: red' : ''"></i>
                 </span>
@@ -25,19 +25,26 @@
         </span>
       </div>
     </div>
+    <div class="modal-overlay" v-if="showModal" @click="closeModal"></div>
+    <MovieModal v-if="showModal" :movie="movie" @close="closeModal" />
   </div>
 </template>
 
 <script>
+import MovieModal from './MovieModal.vue';
 export default {
   name: 'AverageItems',
   props: {
     movie: Object,
   },
+  components: {
+    MovieModal
+  },
   data() {
     return {
       imgSrc: "https://image.tmdb.org/t/p/w500" + this.movie.poster_path,
       showDetails: false,
+      showModal:false,
     }
   },
   computed: {
@@ -48,6 +55,14 @@ export default {
       return Math.ceil(this.movie.vote_average / 2);
     },
   },
+  methods: {
+    openModal() {
+      this.showModal = true;
+    },
+    closeModal() {
+      this.showModal = false;
+    }
+  }
 }
 </script>
 

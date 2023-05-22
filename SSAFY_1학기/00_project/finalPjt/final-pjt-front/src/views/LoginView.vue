@@ -18,16 +18,22 @@
             </div>
 
             <!-- Checkbox -->
-            <div class="form-check d-flex justify-content-start mb-4" style="padding-left: 0px;">
-              <b-form-checkbox
-                id="checkID"
-                v-model="rememberID"
-                name="checkID"
-              >
-              </b-form-checkbox>
-              <label class="form-check-label" for="checkID"> 아이디 저장 </label>
+            <div class="form-check d-flex justify-content-between mb-4" style="padding-left: 0px;">
+              <div class="d-flex justify-content-start">
+                <b-form-checkbox
+                  id="checkID"
+                  v-model="rememberID"
+                  name="checkID"
+                >
+                </b-form-checkbox>
+                <label class="form-check-label" for="checkID"> 아이디 저장 </label>
+              </div>
 
-              <!-- <input class="form-check-input me-2" type="checkbox" value="" id="form1Example3" /> -->
+              <div class="d-flex justify-content-between">
+                <router-link to="/findUsername" class="text-decoration-none">아이디 찾기</router-link>&nbsp;|&nbsp;  
+                <router-link to="/findPw" class="text-decoration-none">비밀번호 찾기</router-link>
+              </div>
+
             </div>
 
             <button class="btn btn-primary btn-lg btn-block" @click="login">Login</button>

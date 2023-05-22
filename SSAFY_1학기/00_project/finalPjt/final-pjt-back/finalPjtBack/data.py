@@ -22,8 +22,8 @@ def get_movie_datas():
       }
       total_data.append(data)
     # 1페이지부터 500페이지까지의 데이터를 가져옴.
-    for page in range(1,180):
-        request_url = "https://api.themoviedb.org/3/movie/top_rated?language=ko-kr&page={page}&region=kr"
+    for i in range(1,180):
+        request_url = "https://api.themoviedb.org/3/movie/top_rated?language=ko-kr&page=" + str(i) + "&region=kr"
         headers = {
                     "accept": "application/json",
                     "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwYjU2OWZjNjEwNTVkYzZhNjA3M2JiOTNlYjgxYmNiMSIsInN1YiI6IjY0MWQ0NTBlMzQ0YThlMDA5YjBiMDE2ZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.bHKaUaJcO2JnSsD5myVc7n4CcFdrW6YE_879_00jYhw"

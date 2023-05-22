@@ -75,7 +75,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .nav-box {
   position: relative;
   top: 30px;

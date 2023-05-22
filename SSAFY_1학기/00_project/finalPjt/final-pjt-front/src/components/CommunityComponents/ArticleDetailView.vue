@@ -7,11 +7,19 @@
             <div class="card-body">
               <h3 class="border rounded fw-bold">{{article?.title}}</h3>
               <div class="d-flex flex-start align-items-center">
-                <img class="rounded-circle shadow-1-strong me-3"
-                  src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp" alt="avatar" width="60"
+
+                <img v-if="article?.user.image_base64" class="rounded-circle shadow-1-strong me-3"
+                  :src="getImageSrc(article?.user.image_base64)" alt="avatar" width="60"
                   height="60" />
+                
+                <img v-else class="rounded-circle shadow-1-strong me-3"
+                  src="../../assets/baseProfile.png" alt="avatar" width="60"
+                  height="60" />
+
+                
+
                 <div class="text-start">
-                  <h6 class="fw-bold text-primary mb-1">{{article?.user}}</h6>
+                  <h6 class="fw-bold text-primary mb-1">{{article?.user.username}}</h6>
                   <p class="text-muted small mb-0">
                     {{ formatDate(article?.created_at) }}
                   </p>
@@ -20,28 +28,36 @@
               </div>
 
               <div class="mt-3 mb-4 pb-2 border border-primary border-opacity-25 rounded text-start ps-3" style="margin-left: 70px; width: 80%">
-                <img style="width: 100%;" class="my-3" v-if="article?.image_base64" :src="getImageSrc(article.image_base64)" alt="Article Image">
+                <img style="width: 100%;" class="my-3" v-if="article?.image_base64" :src="getImageSrc(article?.image_base64)" alt="Article Image">
                 <hr v-if="article?.image_base64">
                 <p class="mt-1">{{article?.content}}</p>
               </div>
 
-              <div class="small d-flex justify-content-start">
+              <div class="small d-flex justify-content-start fw-bold">
                 <div class="d-flex align-items-center me-3" @click="like" style="cursor: pointer;">
-                  <i class="far fa-thumbs-up me-2" style="color: blue;"></i>
+                  <i class="far fa-thumbs-up me-2" :class="{ 'fa-solid' : likeCheck }" style="color: blue;"></i>
                   <p class="mb-0">Like</p>
+                  <span class="ms-1 fs-6">{{article?.like_cnt}}</span>
                 </div>
                 <div class="d-flex align-items-center me-3" @click="commentToggle" style="cursor: pointer;">
                   <i class="far fa-comment-dots me-2" style="color: blue;"></i>
                   <p class="mb-0">Comment</p>
+                  <span class="ms-1 fs-6">{{article?.comment_count}}</span>
                 </div>
               </div>
             </div>
 
             <div v-if="commentShow" class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
               <div class="d-flex flex-start w-100">
-                <img class="rounded-circle shadow-1-strong me-3"
-                  src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(19).webp" alt="avatar" width="40"
+
+                <img v-if="checkUser.image_base64" class="rounded-circle shadow-1-strong me-3"
+                  :src="getImageSrc(checkUser.image_base64)" alt="avatar" width="40"
                   height="40" />
+
+                <img v-else class="rounded-circle shadow-1-strong me-3"
+                  src="../../assets/baseProfile.png" alt="avatar" width="40"
+                  height="40" />
+
                 <div class="form-outline w-100">
                   <b-form-textarea
                     id="comment"
@@ -49,6 +65,7 @@
                     class="form-control" rows="4"
                     max-rows="6"
                     style="background: #fff;" :class="{'active' : comment}"
+                    @keyup.enter="createComment"
                   ></b-form-textarea>
                   <label class="form-label" for="comment">Comment</label>
                 </div>
@@ -75,6 +92,7 @@
                   <ArticleCommentView 
                   v-for="comment in commentsList" :key="comment.id" 
                   :comment="comment" :articleId="id" 
+                  :checkUser="checkUser"
                   @get-comments="getComments"/>
                 </div>
               </div>
@@ -96,11 +114,15 @@ export default {
   },
   data() {
     return {
-      id: this.$route.params.id,
+      id: parseInt(this.$route.params.id),
       commentShow: false,
       article: null,
       comment: '',
       commentsList: '',
+
+      checkUser: this.$store.state.user,
+
+      likeCheck: false,
     }
   },
   methods: {
@@ -113,8 +135,9 @@ export default {
         }
       })
       .then((res) => {
-        // console.log(res.data)
         this.article = res.data
+        // 가져온 게시글 좋아요 목록에 회원이 있다면
+        this.likeCheck = res.data.like_users.some(user => user.username === this.checkUser.username)
       })
       .catch((err) => console.log(err))
     },
@@ -145,7 +168,22 @@ export default {
     },
 
     like() {
-
+      axios({
+        method: 'post',
+        url: `http://127.0.0.1:8000/articles/${this.id}/like/`,
+        headers: {
+          Authorization: `Bearer ${this.$store.state.accessToken}`
+        }
+      })
+      .then((res) => {
+        console.log(res.data)
+        this.likeCheck = !this.likeCheck
+        this.getArticle()
+      })
+      .catch((err) => {
+        console.log(err)
+        alert('로그인 후에 이용해주세요')
+      })
     },
 
     createComment() {
@@ -164,6 +202,7 @@ export default {
         this.comment = ''
         this.commentShow = false
         this.getComments()
+        this.getArticle()
       })
       .catch((err) => console.log(err))
     },
@@ -175,7 +214,8 @@ export default {
 
     getImageSrc(base64String) {
       return `data:image/png;base64, ${base64String}`; // Base64 데이터를 이미지 src 형식으로 변환
-    }
+    },
+
   },
   mounted() {
     this.getArticle()

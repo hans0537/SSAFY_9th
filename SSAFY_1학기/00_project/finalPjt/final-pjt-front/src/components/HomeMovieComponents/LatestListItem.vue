@@ -1,6 +1,6 @@
 <template>
   <div class="col-md-3 col-6">
-    <div class="trend_2im clearfix position-relative" @mouseover="showDetails = true" @mouseleave="showDetails = false">
+    <div class="trend_2im clearfix position-relative" @mouseover="showDetails = true" @mouseleave="showDetails = false" @click="openModal">
       <div class="trend_2im1 clearfix">
         <div class="grid">
           <figure class="effect-jazz mb-0">
@@ -25,20 +25,27 @@
         </span>
       </div>
     </div>
+    <div class="modal-overlay" v-if="showModal" @click="closeModal"></div>
+    <MovieModal v-if="showModal" :movie="movie" @close="closeModal" />
   </div>
 </template>
 
 <script>
+import MovieModal from '../MovieComponents/MovieModal.vue';
 export default {
   name: "LatestListItem",
   props: {
     movie: Object,
+  },
+  components: {
+    MovieModal
   },
   data() {
     return {
       imgSrc: "https://image.tmdb.org/t/p/w500" + this.movie.poster_path,
       overview: this.movie.overview.slice(0, 20) + "...",
       showDetails: false,
+      showModal:false,
     }
   },
   computed: {
@@ -49,6 +56,14 @@ export default {
       return Math.ceil(this.movie.vote_average / 2);
     },
   },
+  methods: {
+    openModal() {
+      this.showModal = true;
+    },
+    closeModal() {
+      this.showModal = false;
+    }
+  }
 };
 </script>
 
@@ -96,5 +111,15 @@ export default {
 
 .fa-regular {
   color: #ff0000
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
 }
 </style>

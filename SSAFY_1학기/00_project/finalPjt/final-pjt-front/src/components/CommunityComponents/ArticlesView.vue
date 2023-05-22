@@ -4,14 +4,14 @@
     <div class="col">
       <div class="card">
         <div class="card-body d-flex justify-content-between">
-          <b-form-select v-model="numSelected" :options="numOptions" class="form-select" style="width: 100px"></b-form-select>
+          <b-form-select v-model="numSelected" :options="numOptions" class="form-select" style="width: 100px" @change="filterArticles"></b-form-select>
           <form>
             <div class="form-group mb-0">
               <div class="input-group mb-0 d-flex align-items-center">
                 <b-form-select v-model="searchSelected" :options="searchOptions" class="me-1 form-select" style="width: 40px; border-radius: 4px;"></b-form-select>
-                <input type="text" class="form-control" placeholder="검색" aria-describedby="project-search-addon" />
+                <input type="text" class="form-control" v-model="searchValue" @keyup.enter="search" placeholder="검색" aria-describedby="project-search-addon" />
                 <div class="input-group-append">
-                    <button class="btn btn-danger ms-1" type="button" id="project-search-addon"><i class="fa fa-search search-icon font-12"></i></button>
+                    <button class="btn btn-danger ms-1" type="button" id="project-search-addon" @click="search"><i class="fa fa-search search-icon font-12"></i></button>
                 </div>
               </div>
             </div>
@@ -35,27 +35,39 @@
                                   <th scope="col">작성자</th>
                                   <th scope="col">좋아요</th>
                                   <th scope="col">조회수</th>
-                                  <th scope="col">삭제</th>
+                                  <th scope="col">수정/삭제</th>
                               </tr>
                           </thead>
                           <tbody>
-                            <ArticlesListView v-for="(article, index) in articles" :key="article.id" :article="article" :index="index"/>
+                            <ArticlesListView style="cursor: pointer;" 
+                              v-for="(article, index) in displayedArticles" :key="article.id" 
+                              :article="article" 
+                              :index="index" 
+                              :numSelected="numSelected" 
+                              :page="currentPage" 
+                              :checkUser="checkUser"
+                              @delete-article="handleDeleteArticle"/>
                           </tbody>
                       </table>
                   </div>
                   <!-- end project-list -->
 
+                <!-- pagenation -->
                 <div class="pt-3 d-flex justify-content-center">
                   <ul class="pagination mb-0">
-                      <li class="page-item disabled">
-                          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                      </li>
-                      <li class="page-item"><a class="page-link" href="#">1</a></li>
-                      <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                      <li class="page-item"><a class="page-link" href="#">3</a></li>
-                      <li class="page-item">
-                          <a class="page-link" href="#">Next</a>
-                      </li>
+                    <li class="page-item" :class="{ disabled: currentPage === 1 }">
+                      <a class="page-link" href="#" tabindex="-1" aria-disabled="true" @click="prevPage()">Previous</a>
+                    </li>
+                    <li v-if="displayedArticles.length === 0" class="page-item active">
+                      <a class="page-link" href="#" @click="changePage(1)">{{ 1 }}</a>
+                    </li>
+
+                    <li class="page-item" :class="{ active: currentPage === page }" v-for="page in pageCount" :key="page">
+                      <a class="page-link" href="#" @click="changePage(page)">{{ page }}</a>
+                    </li>
+                    <li class="page-item" :class="{ disabled: currentPage === pageCount }">
+                      <a class="page-link" href="#" @click="nextPage()">Next</a>
+                    </li>
                   </ul>
                 </div>
                 <router-link :to="{ name: 'articlesCreate' }" class="btn btn-primary float-end" style="position: relative; top: -36px">글작성</router-link>
@@ -86,18 +98,32 @@ export default {
         { value: 30, text: '30개씩' }
       ],
 
-      searchSelected: "title",
+      searchValue: '',
+      searchSelected : "title",
       searchOptions: [
         { value: "title", text: '제목' },
         { value: "content", text: '내용' },
         { value: "user", text: '작성자' },
       ],
+      currentPage: 1,
+
+      checkUser: this.$store.state.user.username
     }
   },
   computed: {
     articles() {
       return this.$store.state.articles
-    }
+    },
+    displayedArticles() {
+      const startIndex = (this.currentPage - 1) * this.numSelected;
+      const endIndex = startIndex + this.numSelected;
+      return this.articles.slice(startIndex, endIndex);
+    },
+
+    // 보여지는 갯수에 따른 총 페이지 수
+    pageCount() {
+      return Math.ceil(this.articles.length / this.numSelected);
+    },
   },
   mounted() {
     this.getArticles()
@@ -105,7 +131,37 @@ export default {
   methods: {
     getArticles(){
       this.$store.dispatch('getArticles')
-    }
+    },
+
+    search() {
+      this.$store.dispatch('searchArticles', {'searchValue' : this.searchValue, 'searchSelected' : this.searchSelected})
+    },
+
+    filterArticles() {
+      // const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      // const endIndex = startIndex + this.itemsPerPage;
+      if(this.currentPage > this.pageCount){
+        this.currentPage = this.pageCount
+      } 
+    },
+
+    // 현재 페이지 선택
+    changePage(page) {
+      this.currentPage = page;
+    },
+    // 이전 페이지 선택
+    prevPage() {
+      this.currentPage --;
+    },
+    // 다음 페이지 선택
+    nextPage() {
+      this.currentPage ++;
+    },
+
+    handleDeleteArticle() {
+      // 게시글 목록에서 삭제된 게시글 제거
+      this.getArticles()
+    },
   }
 }
 </script>

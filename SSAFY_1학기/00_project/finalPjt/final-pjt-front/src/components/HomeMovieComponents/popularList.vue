@@ -6,7 +6,9 @@
           <h4 class="trend_1l" style="text-align:left;">Popularity <span class="col_red">Movies</span></h4>
         </div>
         <div class="col-md-6 col-6 text-end">
-          <h6 class="mb-0"><a class="button" href="#" style="text-decoration: none;"> View All</a></h6>
+          <h6 class="mb-0">
+            <router-link to="/movie/average" class="button" style="text-decoration: none;">View All</router-link>
+          </h6>
         </div>
       </div>
   

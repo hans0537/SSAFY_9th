@@ -42,10 +42,19 @@ export default {
     UpComingList,
     popularList
   },
+  data() {
+    return {
+      dataLoaded: false
+    }
+  },
   created() {
-    this.getLatest()
-    this.getUpComing()
-    this.getPopular()
+    if (!this.dataLoaded) {
+    this.getLatest();
+    this.getUpComing();
+    this.getPopular();
+    this.getall();
+    this.dataLoaded = true;
+  }
   },
   methods: {
     getLatest(){
@@ -56,7 +65,11 @@ export default {
     },
     getPopular() {
       this.$store.dispatch('popularMovie')
+    },
+    getall() {
+      this.$store.dispatch('getall')
     }
+
   }
 }
 </script>

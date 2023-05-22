@@ -1,6 +1,17 @@
 <template>
   <div>
-    <h1>평정 영화</h1>
+    <div style="display: flex; justify-content: end;">
+      <form class="w-auto py-1" style="max-width: 12rem; display:flex; align-items: center;" @submit.prevent="searchmovie">
+        <input ref="searchInput" type="search" class="form-control rounded-0" placeholder="Search" aria-label="Search">
+        <span class="ms-3" type="submit" id="search-addon" @click="searchmovie">
+          <i class="fas fa-search"></i>
+        </span>
+        <span class="ms-3" @click="clearSearch">
+          <i class="fas fa-times"></i>
+        </span>
+      </form>
+
+    </div>
     <div class="container">
       <div v-for="(movies, index) in AverageMovie" :key="index">
         <div>
@@ -11,25 +22,18 @@
       </div>
     </div>
         <!-- Pagination -->
-        <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3">
-      <ul class="pagination">
-        <li class="page-item disabled">
-          <a class="page-link" href="#" aria-label="Previous">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
-        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">4</a></li>
-        <li class="page-item"><a class="page-link" href="#">5</a></li>
-        <li class="page-item">
-          <a class="page-link" href="#" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
-      </ul>
-    </nav>  
+        <div class="overflow-auto" style="display: flex; justify-content: center;">
+      <!-- Use text in props -->
+      <b-pagination
+        v-model="currentPage"
+        :total-rows="filteredMovies.length"
+        :per-page="perPage"
+        first-text="First"
+        prev-text="Prev"
+        next-text="Next"
+        last-text="Last"
+      ></b-pagination>
+    </div>
     <!-- Pagination -->  
   </div>
 </template>
@@ -39,27 +43,81 @@ import AverageItems from './AverageItems.vue';
 
 export default {
   name: 'AverageMovieView',
+  data() {
+    return {
+      rows: 100,
+      perPage: 20,
+      currentPage: 1,
+      tmp:null,
+      search_movie: null,
+    }
+  },
   components: {
     AverageItems
   },
-  created(){
-    this.$store.dispatch('popularMovie')
-  },
   computed: {
     AverageMovie() {
-      const tmp = this.$store.state.popularMovie;
-      console.log(tmp);
+      const tmp1 = this.tmp.slice((this.currentPage - 1) * 20, this.currentPage * 20);
       let res = [];
       let temp = [];
-      for (let i = 1; i <= tmp.length; i++) {
-        temp.push(tmp[i - 1]);
-        if (i % 4 === 0) {
-          res.push(temp);
-          temp = [];
+      if (this.search_movie === null) {
+        for (let i = 1; i <= tmp1.length; i++) {
+          temp.push(tmp1[i - 1]);
+          if (i % 4 === 0) {
+            res.push(temp);
+            temp = [];
+          }
         }
+        if (temp.length > 0) {
+          res.push(temp);
+        }
+      } else {
+        const searchKeyword = this.search_movie;
+        for (let i = 1; i <= this.tmp.length; i++) {
+          
+          if (this.tmp[i - 1].title.includes(searchKeyword)) {
+            temp.push(this.tmp[i - 1]);
+          }
+        }
+        res.push(temp);
+        temp = [];
       }
       return res;
+    },
+    pagedMovies() {
+      const startIndex = (this.currentPage - 1) * this.perPage;
+      return this.filteredMovies.slice(startIndex, startIndex + this.perPage);
+    },
+
+    filteredMovies() {
+      if (this.search_movie === null) {
+        return this.tmp;
+      } else {
+        const searchKeyword = this.search_movie.toLowerCase().trim();
+        return this.tmp.filter(movie => movie.title.toLowerCase().includes(searchKeyword));
+      }
     }
+  },
+  methods: {
+    getPagelen() {
+      this.tmp = this.$store.state.popularMovie.sort((a, b) => -(a.popularity - b.popularity));
+      this.rows = this.$store.state.popularMovie.length;
+    },
+    searchmovie() {
+      // 가장 가까운 form의 input 요소 찾기
+      const searchInput = this.$refs.searchInput;
+      
+      // 검색어 가져오기
+      this.search_movie = searchInput.value.trim(); 
+    },
+    clearSearch() {
+      const searchInput = this.$refs.searchInput;
+      searchInput.value = ''; // 검색어 입력란 비우기
+      this.search_movie = null; // 검색어 초기화
+    }
+  },
+  created() {
+    this.getPagelen();
   }
 };
 </script>

@@ -6,7 +6,9 @@
         <h4 class="trend_1l" style="text-align:left;">UpComing <span class="col_red">Movies</span></h4>
       </div>
       <div class="col-md-6 col-6 text-end">
-        <h6 class="mb-0"><a class="button" href="#" style="text-decoration: none;"> View All</a></h6>
+        <h6 class="mb-0">
+          <router-link to="/movie/upcoming" class="button" style="text-decoration: none;">View All</router-link>
+        </h6>
       </div>
     </div>
 
@@ -17,7 +19,6 @@
           <button type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide-to="1" aria-label="Slide 2" class="" aria-current="true"></button>
           <button type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide-to="2" aria-label="Slide 3" class="" aria-current="true"></button>
           <button type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide-to="3" aria-label="Slide 4" class="" aria-current="true"></button>
-          <button type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide-to="4" aria-label="Slide 5" class="" aria-current="true"></button>
         </div>
         
         <div class="carousel-inner"> 

@@ -11,7 +11,7 @@ from .serializers import ArticleSerializer, CommentSerializer, CommentCreateSeri
 @permission_classes([IsAuthenticated])
 def articles_list_create(request):
     if request.method=='GET':
-        article = Article.objects.all()
+        article = Article.objects.all().order_by('-created_at')
         serializer = ArticleSerializer(article,many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     elif request.method=='POST':
@@ -20,14 +20,39 @@ def articles_list_create(request):
             serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-
 @api_view(['GET'])
+def search(request):
+    search_value = request.GET.get('searchValue')  # searchValue 가져오기
+    search_selected = request.GET.get('searchSelected')  # searchSelected 가져오기
+
+    # 필터링된 게시글 검색
+    if search_selected == 'title':
+        articles = Article.objects.filter(title__icontains=search_value).order_by('-created_at')
+    elif search_selected == 'content':
+        articles = Article.objects.filter(content__icontains=search_value).order_by('-created_at')
+    elif search_selected == 'user':
+        articles = Article.objects.filter(user__username__icontains=search_value).order_by('-created_at')
+    else:
+        articles = Article.objects.all().order_by('-created_at')
+    serializer = ArticleSerializer(articles, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(["GET" , "DELETE" , "PUT"])
 @permission_classes([IsAuthenticated])
 def detail(request,article_pk):
+    article = get_object_or_404(Article, pk=article_pk)
     if request.method=='GET':
-        article = Article.objects.get(pk=article_pk)
         serializer = ArticleSerializer(article)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == "DELETE":
+        article.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    elif request.method == "PUT":
+        serializer = ArticleSerializer(article, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
     
 @api_view(['POST','GET'])
 @permission_classes([IsAuthenticated])
@@ -53,6 +78,21 @@ def comment_create_all(request,article_pk):
         if serializer.is_valid(raise_exception=True):
             serializer.save(article=article, user=user)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['PUT','DELETE'])
+@permission_classes([IsAuthenticated])
+def comment_update_del(request, article_pk, comment_pk):
+    article = Article.objects.get(pk=article_pk)
+    comment = Comment.objects.get(pk=comment_pk)
+    user = request.user
+    if request.method=='PUT':
+        serializer = CommentCreateSerializer(comment, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(article=article, user=user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == "DELETE":
+        comment.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -80,7 +120,23 @@ def comment_comment_create_all(request,article_pk,comment_pk):
             serializer.save(article=article, parent_comment=parent_comment, user=user)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
+@api_view(['PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def coco_update_del(request, article_pk, comment_pk, cocoment_pk):
+    article = Article.objects.get(pk=article_pk)
+    parent_comment = Comment.objects.get(pk=comment_pk)
+    child_comment = Comment.objects.get(pk=cocoment_pk)
+    user = request.user
 
+    if request.method == "PUT":
+        serializer = CoCommentCreateSerializer(child_comment, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(article=article, parent_comment=parent_comment, user=user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == "DELETE":
+        child_comment.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
 # 조회수 증가
 @api_view(['PUT'])
 def hit(request, article_pk):

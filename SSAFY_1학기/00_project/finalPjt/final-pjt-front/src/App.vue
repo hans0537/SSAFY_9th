@@ -12,7 +12,7 @@
             <b-nav-item><router-link to="/" class="w3-bar-item w3-button">Home</router-link></b-nav-item>
           </span>
           <span>
-            <b-nav-item><router-link to="/movie" class="w3-bar-item w3-button">Movie</router-link></b-nav-item>
+            <b-nav-item><router-link to="/movie/all" class="w3-bar-item w3-button">Movie</router-link></b-nav-item>
           </span>
             <b-nav-item><router-link to="/community/articles" class="w3-bar-item w3-button">Community</router-link></b-nav-item>
           <span v-if="isLogin">
@@ -46,6 +46,12 @@
         // isLogin: false,
       }
     },
+    // 서버에 저장된 최고평점 영화 가져오기(3500개 정도라 시간이 걸려서 처음 페이지 열리자마자 가져오기)
+    mounted() {
+    if (this.$store.state.popularMovie === null && this.$store.getters.isLogin) {
+      this.$store.dispatch('popularMovie');
+      }
+    },
     computed: {
       // 로그인 여부 확인
       isLogin() {
@@ -55,7 +61,14 @@
     methods: {
       logout() {
         this.$store.dispatch('logout')
+      },
+
+      getUser() {
+        this.$store.dispatch('getuser')
       }
+    },
+    created() { 
+      this.getUser()
     },
     // mounted() {
     //   this.isLogin = 

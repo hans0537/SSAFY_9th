@@ -163,6 +163,7 @@ export default {
       .then((res) => {
         console.log(res)
         this.$store.dispatch('signup', res.data.access)
+        alert(`${this.username}님 영화光에 오신걸 환영합니다!`)
       })
       .catch((err) => {
         console.log(err)
@@ -174,6 +175,10 @@ export default {
           
           if(errData.email){
             alert(errData.email)
+          }
+
+          if(errData.non_field_errors){
+            alert(errData.non_field_errors)
           }
         }
       })
