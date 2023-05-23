@@ -49,10 +49,10 @@ export default {
   },
   created() {
     if (!this.dataLoaded) {
+    this.getall();
     this.getLatest();
     this.getUpComing();
     this.getPopular();
-    this.getall();
     this.dataLoaded = true;
   }
   },

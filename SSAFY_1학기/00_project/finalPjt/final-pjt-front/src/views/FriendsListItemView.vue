@@ -1,5 +1,5 @@
 <template>
-  <div class="col-xl-3 col-sm-6 mb-5">
+  <div class="col col-xl-3 col-sm-6 mb-5">
     <div class="bg-white rounded shadow-sm py-5 px-4">
       
       <img v-if="user?.image_base64" :src="getImageSrc(user?.image_base64)" alt="" width="100" class="profile-image img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">

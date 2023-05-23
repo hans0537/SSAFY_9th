@@ -42,6 +42,7 @@ import TVMovieView from '@/components/MovieComponents/TVMovie'
 import WarMovieView from '@/components/MovieComponents/WarMovie'
 import WesternMovieView from '@/components/MovieComponents/WesternMovie'
 
+import MovieDetail from '@/components/MovieComponents/MovieDetail'
 
 import ArticleUpdateView from '@/components/CommunityComponents/ArticleUpdateView'
 
@@ -67,6 +68,11 @@ const routes = [
     path: '/signup',
     name: 'signup',
     component: SignupView
+  },
+  {
+    path:'/detail',
+    name:'moviedetail',
+    component:MovieDetail
   },
   {
     path: '/movie',

@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.db.models import Q
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -86,4 +86,35 @@ def friends(request,user_pk):
     user = get_object_or_404(get_user_model(),pk=user_pk)
     if request.method=='GET':
         serializer = FriendListSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def setscore(request):
+    user = request.user
+    if request.method == "PUT":
+        serializer = UserSerializer(user, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getChoRank(request):
+    # cho_points를 기준으로 내림차순 정렬 후 상위 10개만 가져옴
+    choRank = User.objects.all().order_by('-cho_points')[:10]
+
+    if request.method == 'GET':
+        serializer = UserSerializer(choRank, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getOverviewRank(request):
+    # cho_points를 기준으로 내림차순 정렬 후 상위 10개만 가져옴
+    overRank = User.objects.all().order_by('-overview_points')[:10]
+
+    if request.method == 'GET':
+        serializer = UserSerializer(overRank, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

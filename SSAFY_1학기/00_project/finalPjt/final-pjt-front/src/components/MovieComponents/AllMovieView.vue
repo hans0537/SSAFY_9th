@@ -122,5 +122,4 @@ export default {
 </script>
 
 <style>
-/* 스타일 작성 */
 </style>

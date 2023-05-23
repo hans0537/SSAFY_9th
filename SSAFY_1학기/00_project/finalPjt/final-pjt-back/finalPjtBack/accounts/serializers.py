@@ -22,7 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
       model=User
-      fields=('id','username','email','profile','background','cho_points','groups','user_permissions','followings','followers', 'like_articles', 'like_movies', 'followers_cnt', 'followings_cnt', 'image_base64')
+      fields=('id','username','email','profile','background','cho_points','overview_points','groups','user_permissions','followings','followers', 'like_articles', 'like_movies', 'followers_cnt', 'followings_cnt', 'image_base64')
 
 class FriendListSerializer(serializers.ModelSerializer):
     followers = serializers.SerializerMethodField()

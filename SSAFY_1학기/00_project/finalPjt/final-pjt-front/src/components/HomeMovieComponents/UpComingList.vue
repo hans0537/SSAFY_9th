@@ -13,12 +13,13 @@
     </div>
 
     <div class="row trend_2 mt-4">
-      <div id="carouselExampleCaptions2" class="carousel slide" data-bs-ride="carousel">
+      <div id="carouselExampleCaptions2" class="carousel slide" data-bs-ride="carousel" >
         <div class="carousel-indicators">
-          <button type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide-to="0" class="active" aria-label="Slide 1"></button>
-          <button type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide-to="1" aria-label="Slide 2" class="" aria-current="true"></button>
-          <button type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide-to="2" aria-label="Slide 3" class="" aria-current="true"></button>
-          <button type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide-to="3" aria-label="Slide 4" class="" aria-current="true"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide-to="0" class="active bg-success" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide-to="1" class="bg-success" aria-label="Slide 2" aria-current="true"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide-to="2" class="bg-success" aria-label="Slide 3" aria-current="true"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide-to="3" class="bg-success" aria-label="Slide 4" aria-current="true"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide-to="4" class="bg-success" aria-label="Slide 5" aria-current="true"></button>
         </div>
         
         <div class="carousel-inner"> 
@@ -48,7 +49,7 @@ export default {
       const tmp = this.$store.state.upcomingList
       let res = []
       let temp = []
-      for (let i = 1; i <= tmp.length; i++) {
+      for (let i = 1; i <= 20; i++) {
         temp.push(tmp[i - 1])
         if(i % 4 == 0) {
           res.push(temp)
@@ -57,7 +58,7 @@ export default {
       }
       return res
     }
-  }
+  },
 }
 </script>
 

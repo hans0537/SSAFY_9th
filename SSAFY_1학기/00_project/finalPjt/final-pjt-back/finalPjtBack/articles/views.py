@@ -8,7 +8,6 @@ from .serializers import ArticleSerializer, CommentSerializer, CommentCreateSeri
 # Create your views here.
 
 @api_view(['GET','POST'])
-@permission_classes([IsAuthenticated])
 def articles_list_create(request):
     if request.method=='GET':
         article = Article.objects.all().order_by('-created_at')
