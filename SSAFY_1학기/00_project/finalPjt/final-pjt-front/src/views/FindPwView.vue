@@ -53,6 +53,8 @@ export default {
   name: "FindPwView",
   data() {
     return {
+      API_URL: this.$store.state.API_URL,
+
       username: '',
       email: '',
       find: false,
@@ -85,14 +87,13 @@ export default {
 
       axios({
         method: 'get',
-        url: `http://127.0.0.1:8000/accounts/findPw/`,
+        url: `${this.API_URL}/accounts/findPw/`,
         params: {
           email: this.email,
           username: this.username,
         }
       })
-      .then((res) => {
-        console.log(res)
+      .then(() => {
         this.find = true
       })
       .catch((err) => {
@@ -112,8 +113,10 @@ export default {
 
       axios({
         method: 'put',
-        url: `http://127.0.0.1:8000/accounts/findPw/`,
+        url: `${this.API_URL}/accounts/findPw/`,
         data: {
+          username: this.username,
+          followers: [],
           password1: this.password1,
           password2: this.password2,
         },
@@ -122,8 +125,7 @@ export default {
           username: this.username,
         }
       })
-      .then((res) => {
-        console.log(res)
+      .then(() => {
         alert('비밀번호 변경에 성공했습니다. 로그인 하십시오')
         this.$router.push({name: 'login'})
       })

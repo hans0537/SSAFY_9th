@@ -73,6 +73,7 @@
                       <b-form-checkbox
                         id="checkSignUp"
                         name="checkSignUp"
+                        v-model="isChecked"
                       >
                       </b-form-checkbox>
                       <label class="form-check-label" for="checkSignUp"> I agree all statements in <a href="#!">Terms of service</a> </label>
@@ -87,8 +88,8 @@
                 </div>
                 <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
 
-                  <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
-                    class="img-fluid" alt="Sample image">
+                  <img src="../assets/signupImg.jpg"
+                    class="img-fluid" alt="Sample image" style="border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);">
 
                 </div>
               </div>
@@ -107,10 +108,13 @@ export default {
   name: "SignupView",
   data() {
     return {
+      API_URL: this.$store.state.API_URL,
+
       username: '',
       email:'',
       password1: '',
       password2: '',
+      isChecked: false,
     }
   },
   computed: {
@@ -148,11 +152,14 @@ export default {
       } else if (this.password1 !== this.password2){
         alert("비밀번호가 일치하지 않습니다")
         return
+      } else if (!this.isChecked){
+        alert('동의에 체크해주세요!')
+        return
       }
 
       axios({
         method: 'post',
-        url: 'http://127.0.0.1:8000/auth/signup/',
+        url: `${this.API_URL}/auth/signup/`,
         data: {
           username: this.username,
           email: this.email,
@@ -161,7 +168,6 @@ export default {
         }
       })
       .then((res) => {
-        console.log(res)
         this.$store.dispatch('signup', res.data.access)
         alert(`${this.username}님 영화光에 오신걸 환영합니다!`)
       })
@@ -179,6 +185,10 @@ export default {
 
           if(errData.non_field_errors){
             alert(errData.non_field_errors)
+          }
+
+          if(errData.password1){
+            alert(errData.password1)
           }
         }
       })

@@ -36,6 +36,8 @@ export default {
   name: "FindUsernameView",
   data() {
     return {
+      API_URL: this.$store.state.API_URL,
+
       username: '',
       email: '',
     }
@@ -52,16 +54,14 @@ export default {
     },
 
     findUsername() {
-      console.log(this.email)
       axios({
         method: 'get',
-        url: `http://127.0.0.1:8000/accounts/findUsername/`,
+        url: `${this.API_URL}/accounts/findUsername/`,
         params: {
           email: this.email
         }
       })
       .then((res) => {
-        console.log(res)
         this.username = res.data.username
         // this.$store.dispatch('login', res.data.access)
       })

@@ -5,7 +5,7 @@
     <div class="text-start">
       <img v-if="user?.image_base64" :src="getImageSrc(user?.image_base64)" alt="user" class="profile-photo">
       <img v-else src="../../assets/baseProfile.png" alt="user" class="profile-photo">
-      {{quiztype == 'cho' ? user?.cho_points : user?.overview_points}} 점 | {{user?.username}}
+      {{quiztype == 'cho' ? user?.cho_points : user?.overview_points}} 점 | {{truncateUsername(user?.username, 5)}}
     </div>
   </li>
 
@@ -20,6 +20,12 @@ export default {
     quiztype: String,
   },
   methods: {
+    truncateUsername(username, maxLength) {
+      if (username && username.length > maxLength) {
+        return username.substring(0, maxLength) + "..";
+      }
+      return username;
+    },
     getImageSrc(base64String) {
       return `data:image/png;base64, ${base64String}`; // Base64 데이터를 이미지 src 형식으로 변환
     },

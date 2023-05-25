@@ -8,6 +8,8 @@ import FindUsernameView from '../views/FindUsernameView.vue'
 import MovieView from '../views/MovieView.vue'
 import CommunityView from '../views/CommunityView.vue'
 import MyPageView from '../views/MyPageView.vue'
+import ShowAllMovieView from '../views/ShowAllMovieView.vue'
+
 import ArticlesView from '@/components/CommunityComponents/ArticlesView'
 import ChoQuizView from '@/components/CommunityComponents/ChoQuizView'
 import OverQuizView from '@/components/CommunityComponents/OverQuizView'
@@ -265,6 +267,11 @@ const routes = [
     path: '/userprofile/:id',
     name: 'userprofile',
     component: UserProfileView
+  },
+  {
+    path: '/showallmovie/:type/:id',
+    name: 'showallmovie',
+    component: ShowAllMovieView
   },
   {
     path: '/friendslist/:id',

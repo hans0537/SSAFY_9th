@@ -79,9 +79,9 @@
   
     </div>
   </div>
-  </template>
+</template>
   
-  <script>
+<script>
   import axios from 'axios'
   
   export default {
@@ -91,6 +91,8 @@
     },
     data() {
       return {
+        API_URL: this.$store.state.API_URL,
+
         cocommentShow: false,
         cocomment: '',
   
@@ -137,13 +139,12 @@
         } else {
           axios({
             method: 'delete',
-            url: `http://127.0.0.1:8000/movies/${this.movieId}/review/${this.comment.id}/`,
+            url: `${this.API_URL}/movies/${this.movieId}/review/${this.comment.id}/`,
             headers: {
               Authorization: `Bearer ${this.$store.state.accessToken}`
             }
           })
-          .then((res) => {
-            console.log(res)
+          .then(() => {
             // 삭제 후 목록 다시 불러오기
             this.$emit('get-comments');
           })
@@ -154,7 +155,7 @@
       updateComment() {
         axios({
           method: 'put',
-          url: `http://127.0.0.1:8000/movies/${this.movieId}/review/${this.comment.id}/`,
+          url: `${this.API_URL}/movies/${this.movieId}/review/${this.comment.id}/`,
           data: {
             content: this.newComment
           },

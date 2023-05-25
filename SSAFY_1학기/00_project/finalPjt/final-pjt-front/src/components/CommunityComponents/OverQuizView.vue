@@ -1,27 +1,28 @@
 <template>
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-lg-3 d-flex align-items-center">
+      <div class="col-lg-3 d-flex align-items-center mb-4">
         <div class="col static">
           
-          <h1>유저 랭킹!!</h1>
-          <div class="profile-card" v-if="rankUser?.length == 0">
+          <h2>유저 랭킹</h2>
+          <br>
+          <div class="profile-card" v-if="rankUser?.length == 0" >
             <a href="#" class="text-white fs-6">아직 등록된 랭커가 없습니다. <br>가장 먼저 등록해보세요!</a>
           </div>
           <div class="profile-card" v-if="rankUser?.length">
             <img v-if="rankUser[0]?.image_base64" :src="getImageSrc(rankUser[0]?.image_base64)" alt="user" class="profile-photo">
             <img v-else src="../../assets/baseProfile.png" alt="user" class="profile-photo">
             <h3>1등</h3>
-            <a href="#" class="text-white fs-6"><i class="fa-solid fa-crown fa-beat" style="color: #fff700;"></i> {{rankUser[0]?.overview_points}} 점 | {{rankUser[0]?.username}}</a>
+            <a href="#" class="text-white" @click="goToProfile(rankUser[0])"><i class="fa-solid fa-crown fa-beat" style="color: #fff700;"></i> {{rankUser[0]?.overview_points}} 점 | {{truncateUsername(rankUser[0]?.username,5)}}</a>
           </div>
 
           <ul class="nav-news-feed" v-if="rank2users">
             <RankUserListView v-for="(user, index) in rank2users" :key="index"
               :user="user"
               :index="index"
-              :quiztype="'over'"/>
+              :quiztype="'over'"
+              @click="goToProfile(rankUser[0])"/>
           </ul>
-
         </div>
       </div>
 
@@ -66,11 +67,13 @@
                 <div class="answer-card-container" v-if="cardShow">
                   <div class="answer-card" :class="{ 'flipped': isFlipped }" @mouseenter="flipCard(true)" @mouseleave="flipCard(false)">
                     <div class="front">
-                      <h3 style="color: red;">GAME OVER</h3>
+                      <h3 style="color: red;">정답</h3>
                       <img :src="imgSrc" class="w-100 img-height" alt="img25">
                     </div>
-                    <div class="back">
-                      <button @click="closeCard">확인</button>
+                    <div class="back d-flex justify-content-evenly">
+                      <h3 style="color: black;">제목: {{currentQuiz.title}}</h3>
+                      <button class="btn btn-primary mt-3" @click="moviedetail">자세히</button> 
+                      <button class="btn btn-primary" @click="closeCard">닫기</button>
                     </div>
                   </div>
                 </div>
@@ -86,9 +89,9 @@
             </div>
 
             <div class="text-center d-flex justify-content-center">
-              <h4 class="card-subtitle mb-4">정답: </h4>
-              <input type="text" v-model="myAnswer" class="form-control" @keyup.enter="submitAnswer">
-              <button class="btn btn-primary mt-3" @click="submitAnswer">확인</button> 
+              <h4 class="card-subtitle mt-3 me-4">정답: </h4>
+              <input type="text" v-model="myAnswer" class="form-control" @keyup.enter="submitAnswer" style="width:80%">
+              <button class="btn btn-primary mt-3 mb-3 ms-4" @click="submitAnswer">확인</button> 
             </div>
           </div>
         </div>
@@ -99,7 +102,6 @@
 
 <script>
 import axios from 'axios'
-const API_URL = 'http://127.0.0.1:8000'
 
 import RankUserListView from './RankUserListView.vue'
 
@@ -110,6 +112,8 @@ export default {
   },
   data() {
     return {
+      API_URL: this.$store.state.API_URL,
+
       user: null,
       rankUser: null,
 
@@ -150,7 +154,7 @@ export default {
 
       startCheck: false,
       myAnswer: "",
-      timer: 10, // 초기 10초값
+      timer: 60, // 초기 10초값
       timerInterval: null, 
       gameOver: false,
       score: 0,
@@ -162,7 +166,18 @@ export default {
     }
   },
   methods: {
-    
+    truncateUsername(username, maxLength) {
+      if (username && username.length > maxLength) {
+        return username.substring(0, maxLength) + "..";
+      }
+      return username;
+    },
+    // 자세히보기 클릭시 해당영화 상세보기 페이지로 이동
+    moviedetail() {
+      this.$store.commit('setSelectedMovie', this.currentQuiz);
+
+      this.$router.push({ name: 'moviedetail' });
+    },
     // 선택된 장르에 따른 영화 가져오기
     filteredMovies() {
       if (this.genreSelected === 0) {
@@ -182,14 +197,14 @@ export default {
       const quizMovies = this.quizMovies;
 
       if (quizMovies.length === 0) {
-        console.log('해당 장르 영화 정보가 없네요... 다른 장르 할래요?');
+        alert('해당 장르 영화 정보가 없네요... 다른 장르 할래요?');
         return;
       }
 
       // 이전에 출제된 문제를 비교후 미출제 영화들만 가져와 다시 저장 
       const unusedMovies = quizMovies.filter(movie => !this.usedQuizIndexes.includes(movie.id));
       if (unusedMovies.length === 0) {
-        console.log('해당 장르 영화 출제가 끝났어요~~ 다시 도전해보세요');
+        alert('해당 장르 영화 출제가 끝났어요~~ 다시 도전해보세요');
         return;
       }
       
@@ -203,7 +218,6 @@ export default {
       // 출제 되었다고 등록
       this.usedQuizIndexes.push(randomMovie.id);
 
-      console.log(this.currentQuiz.title)
       // 10초 타이머 시작
       this.startTimer(); 
     },
@@ -277,7 +291,6 @@ export default {
       const myAnswer = this.myAnswer.replace(/[^\wㄱ-ㅎㅏ-ㅣ가-힣]/g, '').toLowerCase();
 
       if (myAnswer === answer){
-        console.log('정답')
 
         this.answerCount++
         this.score += 10
@@ -291,7 +304,6 @@ export default {
         clearInterval(this.timerInterval); // 타이머 재시작
         this.pickRandomMovie(); // 다음 문제 출제
       }else {
-        console.log('오답')
         clearInterval(this.timerInterval); // 타이머 종료
 
         // 점수를 가장 먼저 등록
@@ -306,31 +318,18 @@ export default {
       this.myAnswer = ''
     },
 
-    // 줄거리 추출
-    overview_q(str) {
-      let result = this.currentQuiz.overview;
-
-      if (result.length > 20) {
-        result = result.substring(0, 20) + "...";
-      }
-
-      console.log(str);
-      console.log(result);
-      return result;
-    },
-
     toggleFullOverview() {
       this.showFullOverview = !this.showFullOverview;
     },
 
     startTimer() {
-      this.timer = 10; // 타이머 초기화
+      this.timer = 60; // 타이머 초기화
 
       this.timerInterval = setInterval(() => {
         this.timer--; // 1초씩 감소
         if (this.timer <= 0) {
           clearInterval(this.timerInterval); // 타이머 종료
-          console.log('시간 초과');
+          alert('시간 초과');
           // 시간초과 문제 종료!!
           // 점수를 가장 먼저 등록
           this.setScore()
@@ -357,15 +356,13 @@ export default {
       if(this.user.overview_points < this.score){
         axios({
           method: 'put',
-          url: `${API_URL}/accounts/setscore/`,
-          data: { username: this.user.username, followers: this.user.followers, overview_points: this.score },
+          url: `${this.API_URL}/accounts/setscore/`,
+          data: { username: this.user.username, followers: this.user.followers, followings: this.user.followings, overview_points: this.score },
           headers: {
             Authorization: `Bearer ${this.$store.state.accessToken}`,
           }
         })
-        .then((res) => {
-          console.log(res)
-
+        .then(() => {
           // 유저가 게임을 참여한 후에 최신화 하기 위함
           this.getUser()
           this.getRank()
@@ -384,14 +381,13 @@ export default {
     getRank() {
       axios({
         method: 'get',
-        url: `${API_URL}/accounts/overview/getrank/`,
+        url: `${this.API_URL}/accounts/overview/getrank/`,
         headers: {
           Authorization: `Bearer ${this.$store.state.accessToken}`,
         }
       })
       .then((res) => {
         this.rankUser = res.data.filter(user => user.overview_points > 0);
-        console.log(this.rankUser)
       })
       .catch((err) => {
         console.log(err)
@@ -403,6 +399,13 @@ export default {
       return `data:image/png;base64, ${base64String}`; // Base64 데이터를 이미지 src 형식으로 변환
     },
 
+    goToProfile(user) {
+      if (this.user.id === user.id) {
+        this.$router.push({name: 'mypage'})
+      } else {
+        this.$router.push({name: 'userprofile', params: {id : user.id}})
+      }
+    }
   },
 
   computed: {
@@ -560,8 +563,9 @@ export default {
 
 .front,
 .back {
-  width: 100%;
-  height: 100%;
+  background-color: #eee;
+  width: 300px;
+  height: 440px;
   position: absolute;
   top: 0;
   left: 0;
@@ -577,7 +581,7 @@ export default {
 }
 
 .back button {
-  padding: 10px 20px;
+  font-size: 30px;
 }
 
 .front h2,

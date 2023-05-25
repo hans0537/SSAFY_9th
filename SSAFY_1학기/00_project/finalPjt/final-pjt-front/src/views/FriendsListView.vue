@@ -27,7 +27,6 @@
 
 <script>
 import axios from 'axios'
-const API_URL = 'http://127.0.0.1:8000'
 
 import FriendsListItemView from './FriendsListItemView.vue'
 
@@ -38,6 +37,8 @@ export default {
   },
   data() {
     return {
+      API_URL: this.$store.state.API_URL,
+
       userId: this.$route.params.id,
       followersList: null,
       followingsList: null,
@@ -48,13 +49,12 @@ export default {
     getFriends() {
       axios({
         method: 'get',
-        url: `${API_URL}/accounts/${this.userId}/friends/`,
+        url: `${this.API_URL}/accounts/${this.userId}/friends/`,
         headers: {
           Authorization: `Bearer ${this.$store.state.accessToken}`,
         }
       })
       .then((res) => {
-        console.log(res)
         this.followersList = res.data.followers
         this.followingsList = res.data.followings
       })

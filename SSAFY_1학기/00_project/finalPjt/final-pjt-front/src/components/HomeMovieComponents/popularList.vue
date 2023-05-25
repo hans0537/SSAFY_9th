@@ -1,13 +1,14 @@
 <template>
-  <section id="trend" class="pt-4 pb-5 mt-5" >
+  <section id="trend" class="pt-4 mt-5" >
     <div class="container">
       <div class="row trend_1" style="display:flex; justify-content: space-between;">
+        <div class="hr-line"></div>
         <div class="col-md-6 col-6">
           <h4 class="trend_1l" style="text-align:left;">Popularity <span class="col_red">Movies</span></h4>
         </div>
         <div class="col-md-6 col-6 text-end">
           <h6 class="mb-0">
-            <router-link to="/movie/average" class="button" style="text-decoration: none;">View All</router-link>
+            <router-link to="/movie/average" class="btn btn-primary" style="text-decoration: none;">View All</router-link>
           </h6>
         </div>
       </div>
@@ -26,7 +27,7 @@
             <div class="carousel-item" v-for="(movies, index) in popularMovie" :key="index" :class="index===0 ? 'active' : ''">
               <div class="trend_2i row">
                 <popularListItem 
-                v-for="movie in movies" :key="movie.id" :movie="movie"/>
+                v-for="movie in movies" :key="movie?.id" :movie="movie"/>
               </div>
             </div>
           </div>
@@ -43,7 +44,6 @@ export default {
   name: 'popularList',
   data() {
     return {
-      popularList:null,
     }
   },
   components: {

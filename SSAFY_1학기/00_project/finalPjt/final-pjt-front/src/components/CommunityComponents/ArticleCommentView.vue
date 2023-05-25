@@ -2,12 +2,12 @@
 <div class="d-flex flex-start mb-5">
 
   <img v-if="comment?.user.image_base64" class="rounded-circle shadow-1-strong me-3"
-    :src="getImageSrc(comment?.user.image_base64)" alt="avatar" width="65"
-    height="65" />
+    :src="getImageSrc(comment?.user.image_base64)" alt="avatar" width="40"
+    height="40" />
 
   <img v-else class="rounded-circle shadow-1-strong me-3"
-    src="../../assets/baseProfile.png" alt="avatar" width="65"
-    height="65" />
+    src="../../assets/baseProfile.png" alt="avatar" width="40"
+    height="40" />
 
   <div class="flex-grow-1 flex-shrink-1">
     <div>
@@ -101,6 +101,8 @@ export default {
   },
   data() {
     return {
+      API_URL: this.$store.state.API_URL,
+
       cocommentShow: false,
       cocomment: '',
 
@@ -147,13 +149,12 @@ export default {
       } else {
         axios({
           method: 'delete',
-          url: `http://127.0.0.1:8000/articles/${this.articleId}/comments/${this.comment.id}/`,
+          url: `${this.API_URL}/articles/${this.articleId}/comments/${this.comment.id}/`,
           headers: {
             Authorization: `Bearer ${this.$store.state.accessToken}`
           }
         })
-        .then((res) => {
-          console.log(res)
+        .then(() => {
           // 삭제 후 목록 다시 불러오기
           this.$emit('get-comments');
         })
@@ -164,7 +165,7 @@ export default {
     updateComment() {
       axios({
         method: 'put',
-        url: `http://127.0.0.1:8000/articles/${this.articleId}/comments/${this.comment.id}/`,
+        url: `${this.API_URL}/articles/${this.articleId}/comments/${this.comment.id}/`,
         data: {
           content: this.newComment
         },
@@ -172,8 +173,7 @@ export default {
           Authorization: `Bearer ${this.$store.state.accessToken}`
         }
       })
-      .then((res) => {
-        console.log(res.data)
+      .then(() => {
         this.newComment = ''
         this.updateShow = false
         // 수정 후 목록 다시 불러오기
@@ -189,7 +189,7 @@ export default {
     createCoComment() {
       axios({
         method: 'post',
-        url: `http://127.0.0.1:8000/articles/${this.articleId}/cocomments/${this.comment.id}/`,
+        url: `${this.API_URL}/articles/${this.articleId}/cocomments/${this.comment.id}/`,
         data: {
           content: this.cocomment
         },
@@ -197,8 +197,7 @@ export default {
           Authorization: `Bearer ${this.$store.state.accessToken}`
         }
       })
-      .then((res) => {
-        console.log(res.data)
+      .then(() => {
         this.cocomment = ''
         this.cocommentShow = false
         this.$emit('get-comments')

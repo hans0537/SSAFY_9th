@@ -50,12 +50,13 @@
 
 <script>
 import axios from 'axios'
-const API_URL = 'http://127.0.0.1:8000'
 
 export default {
   name: 'ArticleUpdateView',
   data() {
     return {
+      API_URL: this.$store.state.API_URL,
+
       id: this.$route.params.id,
       article: null,
 
@@ -72,7 +73,7 @@ export default {
     getArticle(){
       axios({
         method: 'get',
-        url: `${API_URL}/articles/${this.id}/`,
+        url: `${this.API_URL}/articles/${this.id}/`,
         headers: {
           Authorization: `Bearer ${this.$store.state.accessToken}`
         }
@@ -100,15 +101,14 @@ export default {
       }
       axios({
         method: 'put',
-        url: `${API_URL}/articles/${this.id}/`,
+        url: `${this.API_URL}/articles/${this.id}/`,
         data: { title, content, image: this.uploadImg, hit },
         headers: {
           Authorization: `Bearer ${this.$store.state.accessToken}`,
           'Content-Type': 'multipart/form-data'
         }
       })
-      .then((res) => {
-        console.log(res)
+      .then(() => {
         this.$router.push({name: 'articles'})
       })
       .catch((err) => {

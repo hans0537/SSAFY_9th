@@ -33,12 +33,13 @@
 
 <script>
 import axios from 'axios'
-const API_URL = 'http://127.0.0.1:8000'
 
 export default {
   name: 'FriendsListItemView',
   data() {
     return {
+      API_URL: this.$store.state.API_URL,
+
       me: this.$store.state.user.id,
     }
   },
@@ -59,13 +60,12 @@ export default {
     follow() {
       axios({
         method: 'post',
-        url: `${API_URL}/accounts/${this.user.id}/follow/`,
+        url: `${this.API_URL}/accounts/${this.user.id}/follow/`,
         headers: {
           Authorization: `Bearer ${this.$store.state.accessToken}`
         }
       })
-      .then((res) => {
-        console.log(res.data)
+      .then(() => {
         this.$emit('get-friend');
       })
       .catch((err) => {

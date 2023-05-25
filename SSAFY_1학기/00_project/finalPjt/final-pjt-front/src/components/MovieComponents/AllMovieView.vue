@@ -1,7 +1,7 @@
 <template>
   <div>
     <div style="display: flex; justify-content: end;">
-      <form class="w-auto py-1" style="max-width: 12rem; display:flex; align-items: center;" @submit.prevent="searchmovie">
+      <form class="w-auto my-2" style="max-width: 12rem; display:flex; align-items: center;" @submit.prevent="searchmovie">
         <input ref="searchInput" type="search" class="form-control rounded-0" placeholder="Search" aria-label="Search">
         <span class="ms-3" type="submit" id="search-addon" @click="searchmovie">
           <i class="fas fa-search"></i>

@@ -1,7 +1,7 @@
 <template>
   <tr>
     <th scope="row" @click="articleDetail">{{(index + 1) + numSelected * (page - 1)}}</th>
-    <td class="fw-bold"  @click="articleDetail">{{article?.title}}</td>
+    <td class="fw-bold"  @click="articleDetail">{{truncateUsername(article?.title,10)}}</td>
     <td @click="articleDetail">{{ formatDate(article?.created_at)}}</td>
     <td @click="goToUserProfile">
       <div class="team">
@@ -9,14 +9,12 @@
             <img v-if="article?.user.image_base64"  :src="getImageSrc(article?.user.image_base64)" class="rounded-circle avatar-xs" alt="" />
             <img v-else src="../../assets/baseProfile.png" class="rounded-circle avatar-xs" alt="" />
         </a>
-        <span class="text-success fs-6 fw-bold ms-2"><i class="mdi mdi-checkbox-blank-circle mr-1"></i> {{article?.user.username}}</span>
+        <span class="text-success fs-6 fw-bold ms-2"><i class="mdi mdi-checkbox-blank-circle mr-1"></i> {{truncateUsername(article?.user.username,8)}}</span>
       </div>
     </td>
     <td @click="articleDetail">
       <div class="team">
-        <a href="javascript: void(0);" class="team-member" data-toggle="tooltip" data-placement="top" title="" data-original-title="Roger Drake">
-            <img src="https://bootdey.com/img/Content/avatar/avatar6.png" class="rounded-circle avatar-xs" alt="" />
-        </a>
+        <p>{{article?.comment_count}}</p>
       </div>
     </td>
     <td @click="articleDetail">
@@ -39,10 +37,13 @@
 
 <script>
 import axios from 'axios'
+
 export default {
   name: 'ArticlesListView',
   data(){
     return {
+      API_URL: this.$store.state.API_URL,
+
       upHere1: false,
       upHere2: false,
     }
@@ -55,6 +56,12 @@ export default {
     checkUser: String,
   },
   methods: {
+    truncateUsername(username, maxLength) {
+      if (username && username.length > maxLength) {
+        return username.substring(0, maxLength) + "..";
+      }
+      return username;
+    },
     formatDate(dateString) {
       const date = new Date(dateString);
       const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
@@ -65,7 +72,7 @@ export default {
       // 조회수 증가
       axios({
         method: 'put',
-        url: `http://127.0.0.1:8000/articles/hit/${this.article.id}/`,
+        url: `${this.API_URL}/articles/hit/${this.article.id}/`,
         data: {
           title: this.article.title,
           content: this.article.content,
@@ -75,8 +82,7 @@ export default {
           Authorization: `Bearer ${this.$store.state.accessToken}`
         }
       })
-      .then((res) => {
-        console.log(res)
+      .then(() => {
         this.$router.push({ name: 'articleDetail', params: { id: this.article.id } });
       })
       .catch((err) => {
@@ -91,13 +97,12 @@ export default {
       } else {
         axios({
           method: 'delete',
-          url: `http://127.0.0.1:8000/articles/${this.article.id}/`,
+          url: `${this.API_URL}/articles/${this.article.id}/`,
           headers: {
             Authorization: `Bearer ${this.$store.state.accessToken}`
           }
         })
-        .then((res) => {
-          console.log(res)
+        .then(() => {
           // 삭제 후 목록 다시 불러오기
           this.$emit('delete-article');
         })

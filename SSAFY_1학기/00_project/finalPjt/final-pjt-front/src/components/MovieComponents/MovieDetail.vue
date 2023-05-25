@@ -1,117 +1,124 @@
 <template>
-    <div class="container">
-      <br>
-      <br>
-      <div style="display: flex;">
-        <img :src="imgSrc" class="w-30 img-height" alt="img25">
-        <div style="text-align: start; margin: 20px;">
-          <h2>{{ movie2?.title }}</h2>
-          <div style="display: flex; align-items: baseline;">
-            <h5 style="margin-right: 10px;">{{ movie2?.original_title }}</h5>
-          </div>
-          <h5 style="margin-top: 10px;">
-            <p style="color: darkgray; display: inline; margin-right: 10px;">개봉:</p> {{ movie2?.release_date }}
-          </h5>
-          <h5 style="margin-top: 10px;">
-            <p style="color: darkgray; display: inline; margin-right: 10px;">평점:</p> {{ movie2?.vote_average.toFixed(1) }}
-          </h5>
-          <h5 style="margin-top: 10px;">
-            <p style="color: darkgray; display: inline; margin-right: 10px;">장르:</p> {{ genreList  }}
-          </h5>
-          <h5 style="margin-top: 10px;">
-            <p style="color: darkgray; display: inline; margin-right: 10px;">상영시간:</p> {{ movie2?.runtime  }}분
-          </h5>
+  <div class="container">
+    <br>
+    <br>
+    <div style="display: flex;">
+      <img :src="imgSrc" class="w-30 img-height" alt="img25">
+      <div style="text-align: start; margin: 20px;">
+        <h2>{{ movie2?.title }}</h2>
+        <div style="display: flex; align-items: baseline;">
+          <h5 style="margin-right: 10px;">{{ movie2?.original_title }}</h5>
+        </div>
+        <h5 style="margin-top: 10px;">
+          <p style="color: darkgray; display: inline; margin-right: 10px;">개봉:</p> {{ movie?.release_date }}
+        </h5>
+        <h5 style="margin-top: 10px;">
+          <p style="color: darkgray; display: inline; margin-right: 10px;">평점:</p> {{ movie2?.vote_average.toFixed(1) }}
+        </h5>
+        <h5 style="margin-top: 10px;">
+          <p style="color: darkgray; display: inline; margin-right: 10px;">장르:</p> {{ genreList  }}
+        </h5>
+        <h5 style="margin-top: 10px;">
+          <p style="color: darkgray; display: inline; margin-right: 10px;">상영시간:</p> {{ movie2?.runtime  }}분
+        </h5>
+      </div>
+    </div>
+    <br>
+    <hr>
+    <br>
+    <div class="row">
+      <div class="col-md-5">
+        <div style="text-align:start">
+          <h4 class="fw-bold fs-4">줄거리</h4>
+          <p class="fs-5">{{ movie2?.overview }}</p>
         </div>
       </div>
-      <br>
-      <hr>
-      <br>
-      <div class="row">
-        <div class="col-md-5">
-          <div style="text-align:start">
-            <h4 class="fw-bold fs-4">줄거리</h4>
-            <p class="fs-5">{{ movie2?.overview }}</p>
-          </div>
-        </div>
-        <div class="col-md-2">
-        </div>
-        <div class="col-md-5" style="text-align:start">
-          <h4 class="fw-bold fs-4">키워드</h4>
-          <div v-for="keyword in keywordsList" :key="keyword.id">
+      <div class="col-md-2">
+      </div>
+      <div class="col-md-5" style="text-align:start">
+        <h4 class="fw-bold fs-4">키워드</h4>
+        <div v-for="keyword in keywordsList" :key="keyword.id">
           <li class="fs-5"> {{ keyword }}</li>
-          </div>
         </div>
       </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    
+    <div style="text-align:start">
+      <h4 class="fw-bold fs-4">출연진</h4>
       <br>
-      <br>
-      <br>
-      <div style="text-align:start">
-        <h4 class="fw-bold fs-4">출연진</h4>
-        <br>
-        <div class="container">
-          <div class="row">
-            <ActorViewVue v-for="actor in ActorsData" :key="actor.id" :actor="actor" class="col-2 mb-5"/>
-          </div>
+      <div class="container">
+        <div class="row">
+          <ActorViewVue v-for="actor in ActorsData" :key="actor.id" :actor="actor" class="col-2 mb-5"/>
         </div>
       </div>
-      <!-- 영상가져오기 -->
-      <div class="mt-3" v-if="isSelectedVideo" style="max-height: calc(100vh - 500px);">
-        <div class="ratio ratio-16*9">
-          <iframe :src="videoSrc" frameborder="0" style="height:500px"></iframe>
-        </div>
-        <div>
-          <h4>
-            {{videoTitle}}
-          </h4>
-        </div>
+    </div>
+    
+    <!-- 영상가져오기 -->
+    <div class="mt-3" v-if="isSelectedVideo" style="max-height: calc(100vh - 500px);">
+      <div class="ratio ratio-16*9">
+        <iframe :src="videoSrc" frameborder="0" style="height:500px"></iframe>
       </div>
-      <div style="margin-top:35rem">
-        <div class="container mt-5 pt-5">
-          <div class="row d-flex justify-content-center">
-              <div>
-        <div class="card">
-          <div class="card-body">
-              <div class="small d-flex justify-content-start fw-bold">
-                <div class="d-flex align-items-center me-3" @click="like" style="cursor: pointer;">
-                  <i class="far fa-thumbs-up me-2" :class="{ 'fa-solid' : likeCheck }" style="color: blue;"></i>
-                  <p class="mb-0">Like</p>
-                  <span class="ms-1 fs-6">{{movie?.like_users.length}}</span>
-                </div>
-                <div class="d-flex align-items-center me-3" @click="commentToggle" style="cursor: pointer;">
-                  <i class="far fa-comment-dots me-2" style="color: blue;"></i>
-                  <p class="mb-0">Review</p>
-                  <span class="ms-1 fs-6">{{movie?.review_count}}</span>
-                </div>
+      <div>
+        <h4>
+          {{videoTitle}}
+        </h4>
+      </div>
+    </div>
+    <div>
+    </div>
+    <div style="margin-top:35rem">
+      <div class="container mt-5 pt-5">
+        <div class="row d-flex justify-content-center">
+          <div>
+            <div class="mb-3" style="display: flex; justify-content: end;">
+              <button class="btn btn-success" @click="goBack">이전 페이지</button>
             </div>
-            <div v-if="commentShow" class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
-              <div class="d-flex flex-start w-100">
-              <img v-if="checkUser.image_base64" class="rounded-circle shadow-1-strong me-3"
-                  :src="getImageSrc(checkUser.image_base64)" alt="avatar" width="40"
-                  height="40" />
+            <div class="card">
+              <div class="card-body">
+                <div class="small d-flex justify-content-start fw-bold">
+                  <div class="d-flex align-items-center me-3" @click="like" style="cursor: pointer;">
+                    <i class="far fa-thumbs-up me-2" :class="{ 'fa-solid' : likeCheck }" style="color: blue;"></i>
+                    <p class="mb-0">Like</p>
+                    <span class="ms-1 fs-6">{{movie?.like_users.length}}</span>
+                  </div>
+                  <div class="d-flex align-items-center me-3" @click="commentToggle" style="cursor: pointer;">
+                    <i class="far fa-comment-dots me-2" style="color: blue;"></i>
+                    <p class="mb-0">Review</p>
+                    <span class="ms-1 fs-6">{{movie?.review_count}}</span>
+                  </div>
+                </div>
+                <div v-if="commentShow" class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
+                  <div class="d-flex flex-start w-100">
+                    <img v-if="checkUser?.image_base64" class="rounded-circle shadow-1-strong me-3"
+                        :src="getImageSrc(checkUser?.image_base64)" alt="avatar" width="40"
+                        height="40" />
 
-              <img v-else class="rounded-circle shadow-1-strong me-3"
-                src="../../assets/baseProfile.png" alt="avatar" width="40"
-                height="40" />
-                <div class="form-outline w-100">
-                  <b-form-textarea
-                    id="comment"
-                    v-model="comment"
-                    class="form-control" rows="4"
-                    max-rows="6"
-                    style="background: #fff;" :class="{'active' : comment}"
-                    @keyup.enter="createComment"
-                  ></b-form-textarea>
-                  <label class="form-label" for="comment">Review</label>
+                    <img v-else class="rounded-circle shadow-1-strong me-3"
+                      src="../../assets/baseProfile.png" alt="avatar" width="40"
+                      height="40" />
+                      <div class="form-outline w-100">
+                        <b-form-textarea
+                          id="comment"
+                          v-model="comment"
+                          class="form-control" rows="4"
+                          max-rows="6"
+                          style="background: #fff;" :class="{'active' : comment}"
+                          @keyup.enter="createComment"
+                        ></b-form-textarea>
+                        <label class="form-label" for="comment">Review</label>
+                      </div>
+                  </div>
+                  <div class="float-end mt-2 pt-1">
+                    <button type="button" class="me-2 btn btn-primary btn-sm" @click="createComment">리뷰 등록</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm" @click="commentCancel">취소</button>
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="float-end mt-2 pt-1">
-              <button type="button" class="me-2 btn btn-primary btn-sm" @click="createComment">리뷰 등록</button>
-              <button type="button" class="btn btn-outline-primary btn-sm" @click="commentCancel">취소</button>
-            </div>
-          </div>
-        </div>
-        <div>
+          <div>
           <div class="row d-flex justify-content-center">
             <div>
               <div class="card">
@@ -128,14 +135,15 @@
                   </div>
                 </div>
               </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    </div>
+    </div>
+  </div>
+
 </template>
 
 <script>
@@ -143,13 +151,18 @@ import axios from "axios"
 import _ from "lodash"
 import MovieCommentViewVue from './MovieCommentView.vue';
 import ActorViewVue from './ActorView.vue';
+
 const URL = "https://www.googleapis.com/youtube/v3/search"
-const API_KEY = 'AIzaSyB4_Ve145IcMWtdgu865J-xRWXHBRdwau0'
+// const API_KEY = 'AIzaSyB4_Ve145IcMWtdgu865J-xRWXHBRdwau0' 
+const API_KEY = 'AIzaSyBJNMqfSCoTBI63Q8Bp-8Ai9O1vAkjraIE'
+
 
 export default {
   name: 'MovieDetail',
   data() {
     return {
+      API_URL: this.$store.state.API_URL,
+
       id: parseInt(this.$route.params.id),
       videos:[],
       selectedVideo:{},
@@ -170,18 +183,19 @@ export default {
     ActorViewVue
   },
   methods: {
+    goBack() {
+      window.history.back();
+    },
     getMovie() {
       axios({
         method: 'get',
-        url: `http://127.0.0.1:8000/movies/${this.movie.id}/`,
-        headers: {
-          Authorization: `Bearer ${this.$store.state.accessToken}`
-        }
+        url: `${this.API_URL}/movies/${this.movie.id}/`,
       })
       .then((res) => {
         this.movie = res.data
-        // 가져온 게시글 좋아요 목록에 회원이 있다면
-        this.likeCheck = res.data.like_users.some(user => user.username === this.checkUser.username)
+        // console.log(res.data)
+        // 가져온 영화 좋아요 목록에 회원이 있다면
+        this.likeCheck = res.data.like_users.some(user => user === this.checkUser.id)
       })
       .catch((err) => console.log(err))
     },
@@ -199,7 +213,12 @@ export default {
       .catch((err) => console.log(err))
     },
     commentToggle() {
-      this.commentShow = !this.commentShow
+      if(this.checkUser.username){
+        this.commentShow = !this.commentShow
+      }else {
+        alert('로그인 후 사용하세요!')
+        return
+      }
     },
     getMovie3() {
       axios({
@@ -231,10 +250,7 @@ export default {
     getComments() {
       axios({
         method: 'get',
-        url: `http://127.0.0.1:8000/movies/${this.movie.id}/review/`,
-        headers: {
-          Authorization: `Bearer ${this.$store.state.accessToken}`
-        }
+        url: `${this.API_URL}/movies/${this.movie.id}/review/`,
       })
       .then((res) => {
         const clst = []
@@ -250,7 +266,7 @@ export default {
     createComment() {
       axios({
         method: 'post',
-        url: `http://127.0.0.1:8000/movies/${this.movie.id}/review/`,
+        url: `${this.API_URL}/movies/${this.movie.id}/review/`,
         data: {
           content: this.comment
         },
@@ -274,7 +290,7 @@ export default {
     like() {
       axios({
         method: 'post',
-        url: `http://127.0.0.1:8000/movies/${this.movie.id}/like/`,
+        url: `${this.API_URL}/movies/${this.movie.id}/like/`,
         headers: {
           Authorization: `Bearer ${this.$store.state.accessToken}`
         }
@@ -311,7 +327,7 @@ export default {
     },
     genreList() {
       if (this.movie2 && this.movie2.genres) {
-        return this.movie2.genres.map(genre => genre.name).join('/');
+        return this.movie2.genres.map(genre => genre.name).join(' / ');
       }
       return '';
     },
@@ -347,21 +363,21 @@ export default {
   created() {
     this.movie = this.$store.state.selectedmovie
     this.getComments()
-     axios.get(URL, {
-       params:{
-         key:API_KEY,
-         type:'video',
-         part:'snippet',
-         q: this.movie.title + '예고편'
-       },
-      
-     }).then(res=>{
-       this.videos=res.data.items
-       this.selectedVideo=this.videos[0]
-     })
-     .catch(err => {
-       console.log(err)
-     })
+    axios.get(URL, {
+      params:{
+        key:API_KEY,
+        type:'video',
+        part:'snippet',
+        q: this.movie.title + '예고편'
+      },
+    
+    }).then(res=>{
+      this.videos=res.data.items
+      this.selectedVideo=this.videos[0]
+    })
+    .catch(err => {
+      console.log(err)
+    })
   }
 };
 </script>

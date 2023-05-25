@@ -1,13 +1,14 @@
 <template>
-<section id="trend" class="pt-4 pb-5">
+<section id="trend" class="pt-4 mt-5">
   <div class="container">
     <div class="row trend_1" style="display:flex; justify-content: space-between;">
+      <div class="hr-line"></div>
       <div class="col-md-6 col-6">
         <h4 class="trend_1l" style="text-align:left;">UpComing <span class="col_red">Movies</span></h4>
       </div>
       <div class="col-md-6 col-6 text-end">
         <h6 class="mb-0">
-          <router-link to="/movie/upcoming" class="button" style="text-decoration: none;">View All</router-link>
+          <router-link to="/movie/upcoming" class="btn btn-primary" style="text-decoration: none;">View All</router-link>
         </h6>
       </div>
     </div>

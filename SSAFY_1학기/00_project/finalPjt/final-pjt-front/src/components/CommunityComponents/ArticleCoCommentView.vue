@@ -4,11 +4,11 @@
 
       <img v-if="cocomment.user.image_base64" class="rounded-circle shadow-1-strong"
         :src="getImageSrc(cocomment.user.image_base64)" alt="avatar"
-        width="65" height="65" />
+        width="40" height="40" />
 
       <img v-else class="rounded-circle shadow-1-strong"
         src="../../assets/baseProfile.png" alt="avatar"
-        width="65" height="65" />
+        width="40" height="40" />
     </a>
     <div class="flex-grow-1 flex-shrink-1">
       <div>
@@ -58,6 +58,8 @@ export default {
   name: 'ArticleCoCommentView',
   data() {
     return {
+      API_URL: this.$store.state.API_URL,
+
       upHere1: false,
       upHere2: false,
 
@@ -101,13 +103,12 @@ export default {
       } else {
         axios({
           method: 'delete',
-          url: `http://127.0.0.1:8000/articles/${this.articleId}/cocomments/${this.comment.id}/${this.cocomment.id}/`,
+          url: `${this.API_URL}/articles/${this.articleId}/cocomments/${this.comment.id}/${this.cocomment.id}/`,
           headers: {
             Authorization: `Bearer ${this.$store.state.accessToken}`
           }
         })
-        .then((res) => {
-          console.log(res)
+        .then(() => {
           // 삭제 후 목록 다시 불러오기
           this.$emit('get-comments');
         })
@@ -118,7 +119,7 @@ export default {
     updateCoComment() {
       axios({
         method: 'put',
-        url: `http://127.0.0.1:8000/articles/${this.articleId}/cocomments/${this.comment.id}/${this.cocomment.id}/`,
+        url: `${this.API_URL}/articles/${this.articleId}/cocomments/${this.comment.id}/${this.cocomment.id}/`,
         data: {
           content: this.newCoComment
         },
@@ -126,8 +127,7 @@ export default {
           Authorization: `Bearer ${this.$store.state.accessToken}`
         }
       })
-      .then((res) => {
-        console.log(res.data)
+      .then(() => {
         this.newCoComment = ''
         this.updateShow = false
         // 수정 후 목록 다시 불러오기

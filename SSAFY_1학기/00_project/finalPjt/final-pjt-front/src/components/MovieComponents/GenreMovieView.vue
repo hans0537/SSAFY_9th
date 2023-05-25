@@ -1,7 +1,7 @@
 <template>
   <div>
-    <hr>
-    <nav class="navbar" style="background-color:azure;">
+    <hr style="width: 98%; margin: 4 auto;">
+    <nav class="navbar genre-nav">
       <div class="container" style="display:flex; justify-content: space-between;">
         <router-link to="/movie/genre/action" class="nav-link" :class="{ 'active': $route.path === '/movie/genre/action' }"><h5 class="mt-1">액션</h5></router-link>
         <router-link to="/movie/genre/adventure" class="nav-link" :class="{ 'active': $route.path === '/movie/genre/adventure' }"><h5 class="mt-1">모험</h5></router-link>
@@ -45,6 +45,25 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+nav a {
+  font-weight: bold;
+  color: white;
+}
 
+nav a.router-link-exact-active {
+  color: #E309E8;
+}
+
+.selected {
+  color: black;
+}
+
+.genre-nav{
+  background-color:black;
+  width: 98%;
+  margin: 0px auto;
+  margin-top: 20px;
+  border-radius: 10px;
+}
 </style>

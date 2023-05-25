@@ -1,40 +1,65 @@
 <template>
-  <div id="app" style="background-color: #eee">
-    
-    <!-- Navbar (sit on top) -->
-    <div class="w3-top" style="position: fixed;">
-      <div class="w3-bar w3-white w3-wide w3-padding w3-card">
-        <!-- Logo -->
-        <router-link to="/" class="w3-bar-item w3-button"><b>BR</b> Architects</router-link>
-        <!-- Float links to the right. Hide them on small screens -->
-        <b-nav class="w3-right w3-hide-small">
-          <span>
-            <b-nav-item><router-link to="/" class="w3-bar-item w3-button">Home</router-link></b-nav-item>
-          </span>
-          <span>
-            <b-nav-item><router-link to="/movie/all" class="w3-bar-item w3-button">Movie</router-link></b-nav-item>
-          </span>
-            <b-nav-item><router-link to="/community/articles" class="w3-bar-item w3-button">Community</router-link></b-nav-item>
-          <span v-if="isLogin">
-            <b-nav-item><router-link to="/mypage" class="w3-bar-item w3-button">MyPage</router-link></b-nav-item>
-          </span>
-          <span v-if="isLogin">
-            <b-nav-item style="margin-top:8px;" @click="logout">Logout</b-nav-item>
-          </span>
-          <span v-if="!isLogin">
-            <b-nav-item><router-link to="/login" class="w3-bar-item w3-button">Login</router-link></b-nav-item>
-          </span>
-          <span v-if="!isLogin">
-            <b-nav-item><router-link to="/signup" class="w3-bar-item w3-button">SignUp</router-link></b-nav-item>
-          </span>
-        </b-nav>
+  <div id="app" style="background-color: #eee;">
+    <nav class="navbar navbar-expand-lg sticky-top" style="background-color: white;">
+      <!-- Container wrapper -->
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+          <img
+            src="./assets/logo.png"
+            class="mx-4"
+            height="50"
+            alt="Logo"
+            loading="lazy"
+          />
+        </a>
+        <!-- Toggle button -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-mdb-toggle="collapse"
+          data-mdb-target="#navbarRightAlignExample"
+          aria-controls="navbarRightAlignExample"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Collapsible wrapper -->
+        <div class="collapse navbar-collapse" id="navbarRightAlignExample">
+          <!-- Left links -->
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <b-nav-item><router-link to="/" class="w3-bar-item w3-button">Home</router-link></b-nav-item>
+            </li>
+            <li class="nav-item">
+              <b-nav-item><router-link to="/movie/all" class="w3-bar-item w3-button">Movie</router-link></b-nav-item>
+            </li>
+            <li class="nav-item">
+              <b-nav-item><router-link to="/community/articles" class="w3-bar-item w3-button">Community</router-link></b-nav-item>
+            </li>
+            <li class="nav-item" v-if="isLogin">
+              <b-nav-item><router-link to="/mypage" class="w3-bar-item w3-button">MyPage</router-link></b-nav-item>
+            </li>
+            <li class="nav-item" v-if="isLogin">
+              <b-nav-item @click="logout"><router-link to="//" class="w3-bar-item w3-button">Logout</router-link></b-nav-item>
+            </li>
+            <li class="nav-item" v-if="!isLogin">
+              <b-nav-item><router-link to="/login" class="w3-bar-item w3-button">Login</router-link></b-nav-item>
+            </li>
+            <li class="nav-item" v-if="!isLogin">
+              <b-nav-item><router-link to="/signup" class="w3-bar-item w3-button">SignUp</router-link></b-nav-item>
+            </li>
+
+          </ul>
+          <!-- Left links -->
+        </div>
+        <!-- Collapsible wrapper -->
       </div>
-    </div>
+      <!-- Container wrapper -->
+    </nav>
 
-    <div style="margin-top: 60px;">
-      <router-view/>
-    </div>
-
+    <router-view/>
   </div>
 </template>
 
@@ -65,10 +90,27 @@
 
       getUser() {
         this.$store.dispatch('getuser')
-      }
+      },
+      getLatest() {
+      this.$store.dispatch('getLatest')
+      },
+      getUpComing() {
+        this.$store.dispatch('getUpComing')
+      },
+      getPopular() {
+        this.$store.dispatch('popularMovie')
+      },
+      getall() {
+        this.$store.dispatch('getall')
+      },
     },
     created() { 
       this.getUser()
+      this.getall();
+      this.getLatest();
+      this.getUpComing();
+      this.getPopular();
+      this.$store.state.dataLoaded = true;
     },
     // mounted() {
     //   this.isLogin = 
@@ -96,7 +138,7 @@ nav a {
 }
 
 nav a.router-link-exact-active {
-  color: #42b983;
+  color: #E309E8;
 }
 
 </style>
