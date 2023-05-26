@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import KakaoLoginView
+# from .views import KakaoLoginView
 
 urlpatterns = [
     path('findUsername/', views.findUsername),
@@ -26,6 +26,6 @@ urlpatterns = [
     path('<str:game>/getmyrank/', views.getmyrank),
     path('<str:game>/getrank/<int:user_pk>/', views.getrank),
 
-    # 소셜 로그인
-    path('kakao/', KakaoLoginView.as_view())
+    # # 소셜 로그인
+    # path('kakao/', KakaoLoginView.as_view())
 ]

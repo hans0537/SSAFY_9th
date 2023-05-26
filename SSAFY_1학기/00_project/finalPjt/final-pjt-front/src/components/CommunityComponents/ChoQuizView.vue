@@ -46,6 +46,14 @@
             <div class="text-center mb-4 text-white">
 
               <img src="../../assets/blackboard.png" alt="chalkboard" class="img-fluid">
+
+              <div v-if="ruleText >= 0" class="rule-text d-flex flex-column align-items-center">
+                <p v-if="ruleText === 0">게임방법</p>
+                <p v-if="ruleText === 1" class="fs-5">1. start 버튼을 누르고 시작한다. <br> 게임이 시작되면 60초 안에 <span class="text-decoration-underline">초성의 영화</span>를 맞추면 된다.</p>
+                <p v-if="ruleText === 2" class="fs-5">2. 만약 시간안에 정답을 못 맞추거나, <br> 틀리면 그 즉시 게임이 종료 된다.</p>
+                <p v-if="ruleText === 3" class="fs-5">3. 연속으로 문제를 맞출시 보너스 점수가 있으니 한번에 가장 많은 문제를 맞춰 랭크에 등록 해보세요!!</p>
+                <button v-if="ruleText !== -1" class="btn btn-primary mt-5" @click="showRule" style="width: 200px">다음</button>
+              </div>
               <div v-if="showStart" class="start-text">{{ startText }}</div>
               <div v-if="showCountdown === 3" class="countdown-text">{{ countdown }}</div>
               <div v-if="showCountdown === 2" class="countdown-text">{{ countdown }}</div>
@@ -83,10 +91,11 @@
                 <p>현재 점수: {{ score }}</p>
               </div>
             </div>
-
-            <div class="text-center d-flex justify-content-center">
-              <h4 class="card-subtitle mt-3 me-4">정답: </h4>
-              <input type="text" v-model="myAnswer" class="form-control" @keyup.enter="submitAnswer" style="width:80%">
+            
+            <!-- <button v-if="hintBtn">힌트 보기</button> -->
+            <div class="text-center d-flex justify-content-center align-items-center">
+              <h4 class="card-subtitle pe-4">정답: </h4>
+              <input type="text" v-model="myAnswer" class="form-control" @keyup.enter="submitAnswer" style="width:70%">
               <button class="btn btn-primary mt-3 mb-3 ms-4" @click="submitAnswer">확인</button> 
             </div>
 
@@ -145,6 +154,8 @@ export default {
       ],
       quizMovies: [],
 
+      ruleText: 0,
+      hintBtn: false,
       showStart: false,
       showCountdown: -1,
       startText: 'START',
@@ -167,6 +178,9 @@ export default {
     }
   },
   methods: {
+    showRule() {
+      this.ruleText = (this.ruleText + 1) % 4 
+    },
     truncateUsername(username, maxLength) {
       if (username && username.length > maxLength) {
         return username.substring(0, maxLength) + "..";
@@ -230,6 +244,7 @@ export default {
       }
 
       // 게임판 초기화
+      this.ruleText = -1
       this.score = 0
       this.answerCount = 0
       this.myAnswer = ''
@@ -278,6 +293,7 @@ export default {
 
           // 첫번째 문제를 출제
           this.pickRandomMovie(); 
+          this.hintBtn = true
           return;
         });
 
@@ -343,7 +359,7 @@ export default {
         this.timer--; // 1초씩 감소
         if (this.timer <= 0) {
           clearInterval(this.timerInterval); // 타이머 종료
-          alert('시간 초과!!');
+          // alert('시간 초과!!');
           // 시간초과 문제 종료!!
           // 점수를 가장 먼저 등록
           this.setScore()
@@ -441,6 +457,14 @@ export default {
 </script>
 
 <style scoped>
+.rule-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 4rem;
+}
+
 .start-text {
   position: absolute;
   top: 50%;

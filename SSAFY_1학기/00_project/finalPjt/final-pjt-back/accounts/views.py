@@ -8,80 +8,80 @@ from django.contrib.auth import get_user_model, login
 from .serializers import UserSerializer, FriendListSerializer
 from .models import User
 
-app_key = '7d4a55845458a5954269e348d1f652b1'
+# app_key = ''
 
-# Create your views here.
-from rest_framework.views import APIView
-from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
-import requests
-import base64
-import json
+# # Create your views here.
+# from rest_framework.views import APIView
+# from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
+# import requests
+# import base64
+# import json
 
-class KakaoLoginView(APIView):
-    def get(self, request):
-        kakao_access_code = request.GET.get('code', None)
+# class KakaoLoginView(APIView):
+#     def get(self, request):
+#         kakao_access_code = request.GET.get('code', None)
 
-        url = "https://kauth.kakao.com/oauth/token"
+#         url = "https://kauth.kakao.com/oauth/token"
 
-        headers = {'Content-type': 'application/x-www-form-urlencoded; charset=utf-8'}
+#         headers = {'Content-type': 'application/x-www-form-urlencoded; charset=utf-8'}
 
-        body = {
-            'grant_type': 'authorization_code',
-            'client_id': app_key,
-            'redirect_uri': 'http://127.0.0.1:8000/accounts/kakao',
-            'code': kakao_access_code
-        }
+#         body = {
+#             'grant_type': 'authorization_code',
+#             'client_id': app_key,
+#             'redirect_uri': 'http://127.0.0.1:8000/accounts/kakao',
+#             'code': kakao_access_code
+#         }
 
-        token_kakao_response = requests.post(url, headers=headers, data=body)
+#         token_kakao_response = requests.post(url, headers=headers, data=body)
 
-        response_data = token_kakao_response.json()
+#         response_data = token_kakao_response.json()
 
-        access_token = response_data.get('access_token')
+#         access_token = response_data.get('access_token')
 
-        if access_token:
-            url = 'https://kapi.kakao.com/v2/user/me'
-            headers = {
-                'Authorization': f'Bearer {access_token}',
-                'Content-type': 'application/x-www-form-urlencoded; charset=utf-8'
-            }
+#         if access_token:
+#             url = 'https://kapi.kakao.com/v2/user/me'
+#             headers = {
+#                 'Authorization': f'Bearer {access_token}',
+#                 'Content-type': 'application/x-www-form-urlencoded; charset=utf-8'
+#             }
 
-            kakao_response = requests.get(url, headers=headers)
-            kakao_response = json.loads(kakao_response.text)
+#             kakao_response = requests.get(url, headers=headers)
+#             kakao_response = json.loads(kakao_response.text)
 
-            # Extract necessary information from the Kakao response
-            kakao_id = kakao_response.get('id')
-            kakao_nickname = kakao_response.get('properties', {}).get('nickname')
-            kakao_email = kakao_response.get('kakao_account', {}).get('email')
+#             # Extract necessary information from the Kakao response
+#             kakao_id = kakao_response.get('id')
+#             kakao_nickname = kakao_response.get('properties', {}).get('nickname')
+#             kakao_email = kakao_response.get('kakao_account', {}).get('email')
 
-            if kakao_id:
-                User = get_user_model()
+#             if kakao_id:
+#                 User = get_user_model()
 
-                # Check if a user with the Kakao ID already exists
-                user, created = User.objects.get_or_create(id=kakao_id)
+#                 # Check if a user with the Kakao ID already exists
+#                 user, created = User.objects.get_or_create(id=kakao_id)
 
-                # Update the user's nickname and email
-                if kakao_nickname:
-                    user.username = kakao_nickname
-                if kakao_email:
-                    user.email = kakao_email
+#                 # Update the user's nickname and email
+#                 if kakao_nickname:
+#                     user.username = kakao_nickname
+#                 if kakao_email:
+#                     user.email = kakao_email
 
-                # Save the user object
-                user.save()
+#                 # Save the user object
+#                 user.save()
 
-                # Log in the user
-                login(request, user)
+#                 # Log in the user
+#                 login(request, user)
 
-                # Store user information in local storage
-                data = {
-                    'id': user.id,
-                    'username': user.username,
-                    'email': user.email
-                }
-                response_data['user'] = data
+#                 # Store user information in local storage
+#                 data = {
+#                     'id': user.id,
+#                     'username': user.username,
+#                     'email': user.email
+#                 }
+#                 response_data['user'] = data
 
-                return redirect('http://localhost:8080/')
+#                 return redirect('http://localhost:8080/')
 
-        return HttpResponse('Kakao login failed.')
+#         return HttpResponse('Kakao login failed.')
 
 
 

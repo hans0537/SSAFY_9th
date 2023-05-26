@@ -62,15 +62,13 @@
 import axios from 'axios'
 
 // const redirect_uri = 'http://127.0.0.1:8000/accounts/kakao'
-// const kakao_API = '7d4a55845458a5954269e348d1f652b1'
+// const kakao_API = ''
 // import { mapActions } from 'vuex';
 
 export default {
   name: "LoginView",
   data() {
     return {
-      API_URL: this.$store.state.API_URL,
-
       username: '',
       password: '',
       rememberID: false,
@@ -82,6 +80,7 @@ export default {
   methods: {
     // ...mapActions(['login']),
     login() {
+      console.log(this.API_URL)
       axios({
         method: 'post',
         url: `${this.API_URL}/auth/login/`,
@@ -143,6 +142,11 @@ export default {
     //     });
     // }
   },
+  computed: {
+    API_URL() {
+      return this.$store.state.API_URL
+    }
+  }
 }
 </script>
 

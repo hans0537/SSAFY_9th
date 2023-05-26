@@ -1,92 +1,78 @@
-# final-pjt
+# 1. 팀원 정보 및 업무 분담 내역
 
+- 신성주(팀장) : 유저관리(회원 가입, 로그인, 아이디 & 비번 찾기, 마이 페이지), 커뮤니티(게시판, 초성 & 줄거리 퀴즈)
+- 임철성(팀원) : 영화관리(조회, 검색, 좋아요, 리뷰), 커뮤니티(월드컵 게임), 영화 데이터 확보, 영화 해당 유튜브 영상 제공
 
+# 2. 목표 서비스 구현 및 실제 구현 정도
 
-## Getting started
+- 기술적인 부분에서 목표 했던 기술들은 구현완료
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+  - 유저 부분 = 회원 가입, 로그인, 아이디 & 비번 찾기, 팔로잉/팔로우, 프로필
+  - 커뮤니티 부분 = 자유게시판(댓글,대댓글,좋아요), 게임부분(영화 월드컵, 초성 맞추기, 줄거리 맞추기)
+  - 영화 부분 = 영화를 Carousel형식으로 제시, 영화 상세페이지, 장르/인기영화/현재상영작/상영예정작 별 분류하여 제공, 영화 별 좋아요, 리뷰 작성
+  - 영화 추천 서비스 = 유저의 활동 정보를 기반으로 비슷한 영화들을 랜덤으로 추천. 유저의 월드컵, 좋아요 한 영화들의 장르를 기반으로 추천
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+- 구현 못한 부분
 
-## Add your files
+  - 소셜 로그인: 카카오 로그인 인증을 통해 회원을 가입, 로그인 시키려 했다. 카카오 서버에서 카카오 로그인을 하여 access_token, 사용자 정보를 가져왔지만 다시 Vue화면으로 리다이랙트 시키는 부분에서 막힘
+  - 배포: cloud9 에 배포한 django back 과 netlify 로 배포한 Vue front 를 연동하는 과정에서 https 인증 관련 Mixed Content 오류로 막힘
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+# 3. 데이터베이스 모델링
 
-```
-cd existing_repo
-git remote add origin https://lab.ssafy.com/hans52410537/final-pjt.git
-git branch -M master
-git push -uf origin master
-```
+> ![erd1](/erd1.png) > ![erd2](/erd2.png)
 
-## Integrate with your tools
+# 4. 영화 추천 알고리즘에 대한 기술적 설명
 
-- [ ] [Set up project integrations](https://lab.ssafy.com/hans52410537/final-pjt/-/settings/integrations)
+1. store에 저장한 전체 영화 목록을 가져온뒤 사용자가 좋아요한 영화목록과 사용자가 영화 월드컵 게임을 통해 최종선택한 영화의 장르 id를 가져와서 이를 기반으로 영화를 추천
+2. 장르 ID가 여러개 들어간 리스트를 많이들어간 순으로 정렬하고 장르 ID가 20개 미만이면 현재 장르 ID의 갯수/20 을 실시한 값을 곱하여 20개 이상으로 만들어준 다음 해당 장르ID 리스트를 추후 활용
+3. 장르 ID가 20개이상이라면 위와 비슷하게 비율을 구한다음 각각의 장르 ID 개수에 곱해서 장르ID를 20개정도로 맞춰주고 이를 활용
+4. 장르 ID를 숫자가 많이 큰 순으로 정렬하고 전체영화에서 해당 장르를 포함한 영화를 전체 추출한뒤 해당 리스트에서 lodash를 사용하여 랜덤으로 20개를 추출하여 사용자에게 추천
+5. 만약 사용자가 데이터에 많이 포함되지 않은 장르 ID만 골랐을 경우에는 탐색영화를 20개 까지 무조건 탐색하는것이 아닌 모든 장르 ID리스트를 돌았는데도 20개가 넘지 못하다면 그 해당 영화들만 사용자에게 추천
+6. 위의 과정은 사용자가 메인페이지로 올때마다 실행되며 프로필로 이동했을 경우에는 메인페이지에서 추출했던 영화목록을 같이 보여주는 형식
+7. 다른 페이지를 이용하다가 메인페이지로 다시 이동하거나 메인페이지에서 새로고침을 진행한다면 동일한 장르의 영화들에서 다시 랜덤으로 추출해서 사용자에게 추천해주기 때문에 사용자가 선택한 장르가 많으면 많을수록 매번 새로운 영화를 추천받을 수 있음
 
-## Collaborate with your team
+# 5. 서비스 대표 기능에 대한 설명
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+- 영화 관련
+  - 영화 추천 알고리즘의 경우 4번항목에서 설명한 내용과 동일
+  - 메인페이지 Carousel 내부 아이템 부분 = 마우스 오버 기능을 이용하여 최초에는 영화이미지만 보여주는데 마우스오버를 하게된다면 해당 영화의 제목, 줄거리, 평점(별 5개 기준으로 반 별 까지 판단하여 제시)등을 제공하며 마우스가 해당 이미지 위에서 사라지면 영화 디테일 부분은 사라지는 기능, 추가로 해당 이미지를 클릭하면 상세페이지로 이동
+  - 각 사용자에게 추천영화를 제공하는데 사용자가 비로그인 상태인경우, 로그인은 되어있으나 영화 월드컵이나 좋아요 수가 부족한 경우, 모든 조건을 충족하여 영화를 추천해주는 경우 3가지를 나눠서 사용자에게 제공하여 사용자들이 이용해보고 싶게 만들기 위해 노력
+  - 전체 페이지 / 장르별 페이지(액션,모험,스릴러 등) / 상영 예정영화 / 현재 상영중 영화 등 페이지별 검색 기능 추가 및 Pagination을 통한 사용자의 편의성 증대
+  - 개별영화 디테일 페이지에서는 영화의 전체적인 데이터 (개봉일자, 평점, 장르, 상영시간, 영화 키워드, 줄거리, 예고편 영상, 출연배우 정보 등) 제공 및 사용자들의 좋아요 기능 및 리뷰 기능 구현
+- 커뮤니티 관련
+  - 사용자들이 커뮤니티에서 게시글 작성 및 댓글 대댓글 작성가능 및 사진 업로드 가능
+  - 사용자 이름과 제목의 내용이 일정 길이 이상일 경우 줄여서 페이지에 표시
+  - 사용자가 본인 프로필에서 설정한 사진을 게시글 작성시 또는 댓글 작성시 함께 표현
+  - 사용자가 한번에 보고싶은 개수만큼 볼 수 있도록 설정기능 제공
+  - 초성 퀴즈 = 사용자가 장르를 선택하거나 전체 장르를 대상으로 선택하여 영화 제목의 초성만을 보고 이를 맞추는 형식의 미니게임 제공(초성퀴즈만의 유저 랭킹을 별도로 만들어 유저랭킹 정보 제공)
+  - 영화 줄거리 퀴즈 = 초성 퀴즈와 동일하게 사용자가 문제의 장르를 선택하거나 전체장르를 대상으로 주어지는 영화의 줄거리만을 보고 영화제목을 맞추는 형식의 미니게임(최초에는 약 20자 정도의 글자만 제공하고 더보기를 통해 줄거리를 더 볼 수 있도록 선택가능)
+  - 영화 월드컵 = 16강부터 진행되며 랜덤으로 추출한 영화의 이미지를 보여주며 사용자가 선택하며 최종 한개의 영화를 선택하는 형식의 게임이며 최종 영화 선택완료시 사용자가 해당 영화이미지를 클릭하거나 상세보기 버튼을 클릭시 해당 영화 상세페이지로 이동, 다시하기 버튼도 존재(기존 영화를 보여주었던 방식과 동일하게 마우스오버기능을 추가하여 마우스오버시 약간의 정보 제공), 여기서 선택한 최종영화는 사용자 맞춤 영화추천에 사용
+- 프로필
+  - 기본적인 사용자 정보 제공(팔로워수, 팔로잉 수, 타인 프로필의 경우 팔로우 버튼 등, 사용자 프로필 이미지 변경)
+  - 사용자의 활동 내용 제공(작성 게시글 수, 좋아요한 영화 수, 초성 게임 등수, 줄거리 게임 등수)
+  - 메인페이지에서 제공하던 개인 사용자를 위한 추천영화 리스트 및 추천영화 페이지 제공
+  - 월드컵 1위로 선택한 영화정보 및 페이지 제공
+  - 좋아요한 영화들 또한 동일하게 영화정보 및 페이지 제공
 
-## Test and Deploy
+# 6. 배포 서버 URL(배포할 경우) => 각각 배포는 했지만 api 요청 실패
 
-Use the built-in continuous integration in GitLab.
+- cloud9 탄력적 IP : 15.165.87.195
+- netlify 도메인 : [무비광](moviegwang.netlify.app)
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+# 7. 기타(느낀 점, 후기 등)
 
-***
+- 임철성
 
-# Editing this README
+  - 전체적인 기능들의 경우에는 지금까지 수업 및 실습등을 통해서 활용해 봤던 코드들의 응용버전들이 대부분 이었는데 막상 생각했던 기능들을 적용하면서 다른 기능들과의 관계도 고려하고 해야해서 어려움이 있었던것 같다.
+  - 또한 원하는 기능을 구현하기 위해서 실제 코드 작성시 처음부터 완벽하게 작성하는게 아니라 오류가 생기면 이를 해결해가는 과정이 거의 모든 기능을 개발하면서 들어가서 꽤 많은 시간이 소요되었던것 같다.
+  - 하지만 혼자서 프로젝트를 진행하는것이 아닌 페어로 프로젝트를 진행해보니 서로가 각자 맡은 부분을 개발하며 모르는 부분에 대해서는 서로에게 도움을 주는등 노력을 하여서 목표시간내 개발목표를 달성할 수 있었던것 같다.
+  - 마지막으로 어떤 아이디어를 기능으로 구현할지 많은 고민이 필요할 것 같으며 아이디어를 떠올리는것도 매우 중요한 부분중 하나라고 생각하며 기능 개발이후 이를 사용자에게 어떻게 보여줄지에 대한 고민도 많이 해봐야 할것 같다.
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+- 신성주
+  - 짧은 기간안에 많은 것을 하려다 보니 생각 의외로 오류에 많이 부딪혀서 기획한것 보다 촉박했다.
+    이러한 경험으로 초기에 기획 과 설계를 철처히 해야 한다는것을 깨달았다.
+  - Vue를 사용하면서 컴포넌트 간의 구조에 대해 완벽한 이해를 하게 되었다. 또한 router 이동시 데이터 전달, 함수 실행등을 효과적으로 하는 방법을 배웠다.
+  - 특히 비동기 요청을 하면서 원하는 값들이 늦게 오면서 undefined를 많이 보았고, vue의 lifecycle을 다방면으로 사용해보면서 언제 값들이 넘어오는지 어떤 값들이 늦게 오는지 디버깅 해보고 console.log 를 찍어보면서 비동기와 많이 친해졌다.
+  - django DRF를 사용하면서 나만의 api를 만들고 또 내가 vue에서 요청을 받으면서 분명 api를 만들땐 이러한것이 필요하겠지 생각했지만, 정작 vue(front) 부분에서는 필요가 없었던 부분들이 있었다. 이러한 경험으로 front와 back의 소통이 중요할 것을 예상했다.
+  - 또한 페어 프로젝트를 하면서 각자 코드에 주석의 필요성을 느끼게 되었다. 분명 각자 다른 기능을 하지만 하나의 프로젝트를 같이 함으로써 같이 참조하는것이 생길 수 있다. 그러나 주석이 없었기에 무슨 코드인지 이해가 어려워 소통이 힘들었다. 주석의 중요를 알았지만 더욱 깨닫게 되는 계기였다.
+  - 마지막으로 성공하지 못했던 소셜로그인과 프로젝트의 꽃인 배포에 실패하게 되어 매우 아쉬웠다. 추후 어떤 부분에서 부족했는지 찾아보고 보완해 나갈 예정이다.
